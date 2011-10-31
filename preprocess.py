@@ -11,6 +11,8 @@ TEXT = '\[[TEXT]+\]'   # Everything before the [TEXT] tag
 START_TAG= '\[TEXT\]|\[EXCERPT\]|\[EXCERPTS\]' # SELECT MAIN TAG 
 FIRST =".+?\n" # selects first line of each text 
 REDUNDANT_NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
+COMMA =",(?=\s)"  # selects a comma if it is followed by a space 
+DOUBLE_QUOTES = "\"" # selects double quotes
 
 # Helper: iterates through file by line, then closes file
 def f_iter(filename):
@@ -84,6 +86,13 @@ def sent_splitter(text):
 	for i in range(len(sent_list)):
 		# remove \n in the middle of the line if it exists 
 		sent_list[i] = re.sub(REDUNDANT_NEWLINE," ",sent_list[i])
+
+		# STANFORD PARSER CONSIDERS COMMAS DONT DELETE  
+		# Remove double quotes 
+#sent_list[i] = re.sub(DOUBLE_QUOTES,"",sent_list[i])
+		# replace comma (if its followed by space) with ""
+#sent_list[i] = re.sub(COMMA,"",sent_list[i]) 
+
 	return "\n".join(sent_list) 
 
 # Preprocess that file!
@@ -104,9 +113,9 @@ def main():
 			meta_tag = "meta_" 
 			main_tag = "main_"
 			f_write(REPL_DIR + meta_tag+file, meta)
-			# send main to sent splitter 
-			main_text = sent_splitter(main)
-			f_write(REPL_DIR + main_tag+file, main_text)
+			# send main to sent splitter -->stanford Parser takes care of this U.
+			#main_text = sent_splitter(main)
+			f_write(REPL_DIR + main_tag+file, main)
 			
 
 if __name__ == '__main__':
