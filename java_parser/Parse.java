@@ -20,7 +20,7 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 class Parse {
 
 
-	  static boolean DEBUG = false ;
+	  static boolean DEBUG = false ; //
 	  static String curr_parser = "englishFactored.ser.gz";
 	  static String backup_parser = "englishPCFG.ser.gz";
 	  static String out_prefix =".parsed";
@@ -135,7 +135,7 @@ class Parse {
 						TreePrint tp = new TreePrint("wordsAndTags,oneline,typedDependenciesCollapsed");
 						tp.setPrintWriter(out);
 			      		tp.printTree(parse);
-						out.write("\n");
+						out.write("*************\n");
 
 					}
     				out.close();
