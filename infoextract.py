@@ -7,7 +7,12 @@ PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
 
+if(len(sys.argv) == 1):
+	print "please enter an input file "
+	sys.exit()
+
 input_file = sys.argv[1]
+
 output_file = input_file + ".templates" 
 # opening the output file for writing 
 f_out = open(output_file,'w')
