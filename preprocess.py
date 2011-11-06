@@ -100,7 +100,7 @@ def pprocess_file(filename):
 	text = remove_first_line(text) 
 	(meta,main) = split_text(text)
 	if(meta == -1 ):
-		print "error splitting file",filename,"\n"
+		print ("error splitting file",filename,"\n")
 
 	return (meta,main)
 
