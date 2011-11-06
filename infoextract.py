@@ -8,7 +8,7 @@ EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
 
 if(len(sys.argv) == 1):
-	print "please enter an input file "
+	print ("please enter an input file ")
 	sys.exit()
 
 input_file = sys.argv[1]
@@ -35,8 +35,8 @@ def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
 def process_input_text(file_text,id_name):
 	file_text = re.sub(NEWLINE," ",file_text)
 	if(DEBUG):
-		print "processing text",file_text 
-		print ""
+		print ("processing text",file_text) 
+		print ("")
 	incident_type = incident_predictor.get_predicted_event(file_text) 
 	print_out(id_name,incident_type,"-","-","-","-","-")
 
