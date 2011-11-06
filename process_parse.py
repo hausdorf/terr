@@ -4,7 +4,7 @@ import re
 DEBUG = False
 PATH="developset/test_dir_parsed_1/" 
 
-EMPTY_LINE  = "\s*\n$" # checks if a line is empty
+EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 TAGGED_COMMA = "\s,\/,(?=\s)"  # selects commas in the pos tagged o/p of parser ..should we remove '(single quotes) as well ? 
 COMMA  = ","
 NOUN_DEP = "nn"
