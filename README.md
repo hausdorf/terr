@@ -25,9 +25,7 @@ make use of [source] : organization name ?
 
 6. **Functions that prints the relevant score and ranking score ( Autoslug TS)**
 
-7. **AutoSlug Type Annotation  // Priority : After Nov 8**
-
-	Annotate the input MUC texts with the Answer keys 
+7. **AutoSlug Type Annotation  // Priority : After Nov 8** Annotate the input MUC texts with the Answer keys 
 
 8. **semantic constraints checker : wordnet or basilisk like tool** check for semantic constraint like human weapon 
 
