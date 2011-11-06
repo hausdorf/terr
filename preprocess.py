@@ -1,5 +1,4 @@
 import os, re, stat
-import nltk
 
 # WHERE YOU PUT OUR DATA
 PATH = 'developset/texts/'  # Old data
