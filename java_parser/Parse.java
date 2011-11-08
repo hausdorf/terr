@@ -24,8 +24,10 @@ class Parse {
 	  static String curr_parser = "englishFactored.ser.gz";
 	  static String backup_parser = "englishPCFG.ser.gz";
 	  static String out_prefix =".parsed";
-	  static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir";
-	  static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir_parsed/";
+	  //static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir";
+	  static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/irrel-texts/texts";
+	  //static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir_parsed/";
+	  static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/irrel-texts/texts_parsed/";
 	  static File dir ; 
 	  public static void createOutDir(){
 
@@ -84,6 +86,7 @@ class Parse {
 					String file_path = file.getPath();
 			    	String new_abs_path = out_dir_path+filename + out_prefix ;
 					// open file handle for writing 
+					System.out.println("processing file "+file_path);
 					if(DEBUG){
 						System.out.println("processing file "+file_path);
 						System.out.println("processing filename "+filename);

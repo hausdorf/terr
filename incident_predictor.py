@@ -35,7 +35,7 @@ def get_arson_count(text):
 	if(m):
 		count += (4)*len(m)
 	if(DEBUG):
-		print " CAME HERE ************************************ count ",count
+		print (" CAME HERE ************************************ count ",count)
 	return count
 
 # search for attack 
@@ -66,7 +66,7 @@ def get_attack_count(text):
 	if(m):
 		count += len(m)
 	if(DEBUG):
-		print " ATTACK ************************************ count ",count
+		print (" ATTACK ************************************ count ",count)
 	return count 
 
 # search for bomb , l8r look for blew up 
@@ -94,7 +94,7 @@ def get_bomb_count(text):
 	if(m):
 		count += (2)*len(m)
 	if(DEBUG):
-		print " BOMB ************************************ count ",count
+		print (" BOMB ************************************ count ",count)
 	return count
 
 def get_kidnap_count(text):
@@ -106,7 +106,7 @@ def get_kidnap_count(text):
 	if(m):
 		count += 3*len(m)
 	if(DEBUG):
-		print " kidnap ************************************ count ",count
+		print (" kidnap ************************************ count ",count)
 	return count 
 
 def get_robbery_count(text):
@@ -127,7 +127,7 @@ def get_robbery_count(text):
 	if(m):
 		count += 4*len(m)
 	if(DEBUG):			
-		print " ROBBERY ************************************ count ",count
+		print (" ROBBERY ************************************ count ",count)
 	return count 
 		
 def get_predicted_event(text):
@@ -180,7 +180,7 @@ def main():
 		# remove all new lines in this text == make it one big string  
 		text = re.sub(NEWLINE," ",text)
 		event_type = get_predicted_event(text)
-		print "event type for the file ",file," is = ",event_type 
+		print ("event type for the file ",file," is = ",event_type) 
 
 
 if __name__ == "__main__" :
