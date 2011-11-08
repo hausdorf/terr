@@ -39,19 +39,34 @@ def find_thing(prsed, patterns):
 			i += 1
 
 def find_weapon(prsed):
-	return list(find_thing(prsed, PATT_WEAP))[0]
+	found = list(find_thing(prsed, PATT_WEAP))[0]
+	if len(found) == 0:
+		return '-'
+	return found
 
 def find_perp_indiv(prsed):
-	return list(find_thing(prsed, PATT_PIND))[0]
+	found = list(find_thing(prsed, PATT_PIND))[0]
+	if len(found) == 0:
+		return '-'
+	return found
 
 def find_perp_org(prsed):
-	return list(find_thing(prsed, PATT_PORG))[0]
+	found = list(find_thing(prsed, PATT_PORG))[0]
+	if len(found) == 0:
+		return '-'
+	return found
 
 def find_target(prsed):
-	return list(find_thing(prsed, PATT_TARG))[0]
+	found = list(find_thing(prsed, PATT_TARG))[0]
+	if len(found) == 0:
+		return '-'
+	return found
 
 def find_victim(prsed):
-	return list(find_thing(prsed, PATT_VICT))[0]
+	found = list(find_thing(prsed, PATT_VICT))[0]
+	if len(found) == 0:
+		return '-'
+	return found
 
 
 def match(prsed):
