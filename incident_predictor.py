@@ -28,12 +28,14 @@ def get_max_kv(event_dict):
 def get_arson_count(text):
 
 	count = 0 
-	m = re.findall("arson(?=\s)",text,re.IGNORECASE) # positive lookahead 
+	m = re.findall("arson(?=\s)",text,re.IGNORECASE|re.MULTILINE) # positive lookahead 
 	if(m):
-		count = len(m)
-	m = re.findall("(?<=\s)burn",text,re.IGNORECASE)  # positive lookbehind 
+		count = 4*len(m)
+	m = re.findall("(?<=\s)burn",text,re.IGNORECASE|re.MULTILINE)  # positive lookbehind 
 	if(m):
-		count += len(m)
+		count += (4)*len(m)
+	if(DEBUG):
+		print " CAME HERE ************************************ count ",count
 	return count
 
 # search for attack 
@@ -41,74 +43,91 @@ def get_attack_count(text):
 	count = 0
 	## AM NOT ADDING DEAD HERE AS LOTS OF INCEDENTS CAN HAVE DEAD ???? also 1013 has machinegunned ?? should we have gunned ? terrorist gunned ?
 	## DEath of jesuit priest is a common occurence !!
-	m = re.findall("(?<=\s)attack",text,re.IGNORECASE)
+	m = re.findall("(dynamite|bomb|bombing)\sattack",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
-		count = len(m)
-	m = re.findall("(?<=\s)murder",text,re.IGNORECASE)
-	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)kill",text,re.IGNORECASE) ## ambiguous ?? could conflict with bomb attack 
-	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)shot",text,re.IGNORECASE)
+		count = 0
+	else :
+		m = re.findall("(?<=\s)attack",text,re.IGNORECASE|re.MULTILINE)
+		if(m):
+			count = len(m)
+	m = re.findall("(?<=\s)murder",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-	m = re.findall("(?<=\s)assassinat",text,re.IGNORECASE)
+	#m = re.findall("(?<=\s)kill",text,re.IGNORECASE|re.MULTILINE) ## ambiguous ?? could conflict with bomb attack 
+#	if(m):
+#		count += len(m)
+	m = re.findall("(?<=\s)shot",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-	m = re.findall("(?<=\s)massacre",text,re.IGNORECASE)
+	m = re.findall("(?<=\s)assassinat",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 2*len(m)
+	m = re.findall("(?<=\s)massacre",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
+	if(DEBUG):
+		print " ATTACK ************************************ count ",count
 	return count 
 
 # search for bomb , l8r look for blew up 
 def get_bomb_count(text):
 	count = 0 
-	m = re.findall("(?<=\s)bomb",text,re.IGNORECASE)
+	m = re.findall("(?<=\s)bomb",text,re.IGNORECASE|re.MULTILINE) # can be done by the military 
 	if(m):
-		count = len(m)
-	m = re.findall("(?<=\s)explod",text,re.IGNORECASE)
+		count = 2*len(m)
+	m = re.findall("(?<=\s)bombed rebel",text,re.IGNORECASE|re.MULTILINE) # discount bomb if followed  by rebel
 	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)explos",text,re.IGNORECASE)
+		count = 0
+	m = re.findall("(?<=\s)explod",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)dynamite",text,re.IGNORECASE)
-	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)blowing\-up",text,re.IGNORECASE)
+		count += 2*len(m)
+	m = re.findall("(?<=\s)explosi",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-	m = re.findall("(?<=\s)blew\-up",text,re.IGNORECASE)
+	m = re.findall("(?<=\s)dynamite",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-
+	m = re.findall("(?<=\s)blowing\-up",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += (2)*len(m)
+	m = re.findall("(?<=\s)blew\-up",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += (2)*len(m)
+	if(DEBUG):
+		print " BOMB ************************************ count ",count
 	return count
 
 def get_kidnap_count(text):
 	count = 0 
-	m = re.findall("(?<=\s)kidnap",text,re.IGNORECASE)
+	m = re.findall("(?<=\s)kidnap",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
-		count = len(m)
+		count = 3*len(m)
+	m = re.findall("(?<=\s)abduct",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
+	if(DEBUG):
+		print " kidnap ************************************ count ",count
 	return count 
 
 def get_robbery_count(text):
 	count = 0 
-	m = re.findall("(?<=\s)stole(?=\s)",text,re.IGNORECASE) # look ahead and look behind 
+	m = re.findall("(?<=\s)stole(?=\s)",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind 
 	if(m):
 		count = len(m) 
-	m = re.findall("(?<=\s)steal",text,re.IGNORECASE) # look behind   
+	m = re.findall("(?<=\s)steal",text,re.IGNORECASE|re.MULTILINE) # look behind   
 	if(m):
 		count += len(m)
-	m = re.findall("(?<=\s)robbery(?=\s)",text,re.IGNORECASE) # look ahead and look behind
+	m = re.findall("(?<=\s)robbery(?=\s)",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind
 	if(m):
-		count += len(m) 
-	m = re.findall("(?<=\s)robbed(?=\s)",text,re.IGNORECASE) # look ahead and look behind 
+		count += 4*len(m) 
+	m = re.findall("(?<=\s)robbed(?=\s)",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind 
 	if(m):
-		count += len(m)
-	m = re.findall("(?<=\s)loot",text,re.IGNORECASE) # look ahead and look behind 
+		count += 4*len(m)
+	m = re.findall("(?<=\s)loot",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind 
 	if(m):
-		count += len(m)
+		count += 4*len(m)
+	if(DEBUG):			
+		print " ROBBERY ************************************ count ",count
 	return count 
 		
 def get_predicted_event(text):
@@ -116,15 +135,15 @@ def get_predicted_event(text):
 	# init dictionary 
 	event_type = {} 
 	# arson count 
-	event_type['arson'] = get_arson_count(text) 
+	event_type['ARSON'] = get_arson_count(text) 
 	# attack count  
-	event_type['attack'] = get_attack_count(text)
+	event_type['ATTACK'] = get_attack_count(text)
 	# bomb count 
-	event_type['bombing'] = get_bomb_count(text)
+	event_type['BOMBING'] = get_bomb_count(text)
 	# kidnap count 
-	event_type['kidnapping'] = get_kidnap_count(text)
+	event_type['KIDNAPPING'] = get_kidnap_count(text)
 	# robbery 
-	event_type['robbery'] = get_robbery_count(text)
+	event_type['ROBBERY'] = get_robbery_count(text)
 
 	# TODO 
 	# get max key with max value  .. CURRENTLY WE DONT HANDLE TIES 
@@ -133,7 +152,7 @@ def get_predicted_event(text):
 	if(key == 0):
 		if(DEBUG):
 			event = '-' # SHOULD WE SET ATTACK AS DEFAULT ..BECAUSE ELLEN SAID THAT EVERY DOC HAS ONE TERRORIST ATTACK..Also the docs with attack default are the most difficult ones for other slots too 
-		event = 'attack'	
+		event = 'ATTACK'	
 	else :
 	  	event = key 
 
