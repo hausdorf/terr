@@ -18,17 +18,19 @@ def fmt(l):
 
 def find_thing(prsed, patterns):
 	for patt in patterns:
-		pattspl = patt.split()
+		pattspl = patt.upper().split()
 		lpattspl = len(pattspl)
 
-		prsedspl = prsed.split()
+		prsedspl = prsed.upper().split()
 		lprsedspl = len(prsedspl)
 
 		i = 0
 		j = 0
 		while i < lprsedspl and j < lpattspl:
 			curr = prsedspl[i].split('/')[0]
-			if pattspl[j] == '%s' or curr == pattspl[j]:
+			if curr == 'EXPLODE':
+				print 'M', pattspl[j], curr
+			if pattspl[j] == '%S' or curr == pattspl[j]:
 				j += 1
 			else:
 				i -= j
@@ -69,15 +71,25 @@ def find_victim(prsed):
 	return found[0]
 
 
+def first_line(prsed):
+	spl = prsed.split('\n')[0]
+	if len(spl) > 0:
+		return spl
+	else:
+		return prsed.split('\n')[0]
+
+
 def match(prsed):
 	result = {'INCIDENT': '-', 'WEAPON': '-', 'PERP INDIV': '-',
 			'PERP ORG': '-', 'TARGET': '-', 'VICTIM': '-'}
 
-	result['WEAPON'] = find_weapon(prsed)
-	result['PERP INDIV'] = find_perp_indiv(prsed)
-	result['PERP ORG'] = find_perp_org(prsed)
-	result['TARGET'] = find_target(prsed)
-	result['VICTIM'] = find_victim(prsed)
+	line = first_line(prsed)
+
+	result['WEAPON'] = find_weapon(line)
+	result['PERP INDIV'] = find_perp_indiv(line)
+	result['PERP ORG'] = find_perp_org(line)
+	result['TARGET'] = find_target(line)
+	result['VICTIM'] = find_victim(line)
 
 	return result
 
