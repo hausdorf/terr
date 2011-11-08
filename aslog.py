@@ -1,4 +1,3 @@
-from __future__ import with_statement
 import os, re, sys
 
 
@@ -13,6 +12,8 @@ def groups(l, key=lambda x:x):
 	grp = []
 	curr = key(l[0])
 	for e in l:
+		if '/' not in e:
+			continue
 		if curr == key(e):
 			grp.append(e)
 		else:
