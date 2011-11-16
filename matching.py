@@ -1,21 +1,23 @@
 from aslog import groups
+import collections
 
-PATT_WEAP = ['%s exploded']
-PATT_PIND = ['%s kidnapped']
+PATT_WEAP = ['<np> exploded']
+PATT_PIND = ['<np> kidnapped']
 PATT_PORG = []
-PATT_TARG = ['%s exploded', 'attack on %s', 'exploded in %s', 'occurred on',
-		'destroyed %s', 'exploded on %s']
-PATT_VICT = ['murder of %s', 'assassination of %s', '%s was killed',
-		'%s was kidnapped', 'attack on %s', '%s was injured',
-		'death of %s', 'claimed %s', '%s was wounded', 'destroyed %s',
-		'%s was murdered', '%s died']
+PATT_TARG = ['<np> exploded', 'attack on <np>', 'exploded in <np>',
+		'occurred on', 'destroyed <np>', 'exploded on <np>']
+PATT_VICT = ['murder of <np>', 'assassination of <np>', '<np> was killed',
+		'<np> was kidnapped', 'attack on <np>', '<np> was injured',
+		'death of <np>', 'claimed <np>', '<np> was wounded',
+		'destroyed <np>', '<np> was murdered', '<np> died']
 
 
-def fmt(l):
+def fmt_prev(l):
 	grp = list(groups(l, key=lambda x:x.split('/')[1]))
 	nplst = [e.split('/')[0] for e in grp[-1]]
 	return ' '.join(nplst)
 
+# find_thing : prsed_string -> patterns -> list_of_words, pattern
 def find_thing(prsed, patterns):
 	for patt in patterns:
 		pattspl = patt.upper().split()
@@ -28,75 +30,83 @@ def find_thing(prsed, patterns):
 		j = 0
 		while i < lprsedspl and j < lpattspl:
 			curr = prsedspl[i].split('/')[0]
-			if curr == 'EXPLODE':
-				print 'M', pattspl[j], curr
-			if pattspl[j] == '%S' or curr == pattspl[j]:
+			if pattspl[j] == '<np>' or curr == pattspl[j]:
 				j += 1
 			else:
 				i -= j
 				j = 0
 
 			if j == lpattspl:
-				yield fmt(prsedspl[:i])
+				yield fmt_prev(prsedspl[:i]), patt
+				j = 0
+				i -= 1
 			i += 1
 
-def find_weapon(prsed):
+def agg_weapon(prsed):
 	found = list(find_thing(prsed, PATT_WEAP))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
-def find_perp_indiv(prsed):
+def agg_perp_indiv(prsed):
 	found = list(find_thing(prsed, PATT_PIND))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
-def find_perp_org(prsed):
+def agg_perp_org(prsed):
 	found = list(find_thing(prsed, PATT_PORG))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
-def find_target(prsed):
+def agg_target(prsed):
 	found = list(find_thing(prsed, PATT_TARG))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
-def find_victim(prsed):
+def agg_victim(prsed):
 	found = list(find_thing(prsed, PATT_VICT))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
+def tally_rslts(d, rslts, slot):
+	if rslts == '-':
+		return
 
-def first_line(prsed):
-	spl = prsed.split('\n')[0]
-	if len(spl) > 0:
-		return spl
-	else:
-		return prsed.split('\n')[0]
+	for chnk, rslt in rslts:
+		d[slot][rslt] += 1
 
+def aggregate(prsed):
+	
+	result = {
+		'INCIDENT': collections.defaultdict(lambda:0),
+		'WEAPON': collections.defaultdict(lambda:0),
+		'PERP INDIV': collections.defaultdict(lambda:0),
+		'PERP ORG': collections.defaultdict(lambda:0),
+		'TARGET': collections.defaultdict(lambda:0),
+		'VICTIM': collections.defaultdict(lambda:0)
+		}
 
-def match(prsed):
-	result = {'INCIDENT': '-', 'WEAPON': '-', 'PERP INDIV': '-',
-			'PERP ORG': '-', 'TARGET': '-', 'VICTIM': '-'}
-
-	line = first_line(prsed)
-
-	result['WEAPON'] = find_weapon(line)
-	result['PERP INDIV'] = find_perp_indiv(line)
-	result['PERP ORG'] = find_perp_org(line)
-	result['TARGET'] = find_target(line)
-	result['VICTIM'] = find_victim(line)
+	tally_rslts(result, agg_weapon(prsed), 'WEAPON')
+	tally_rslts(result, agg_perp_indiv(prsed), 'PERP INDIV')
+	tally_rslts(result, agg_perp_org(prsed), 'PERP ORG')
+	tally_rslts(result, agg_target(prsed), 'TARGET')
+	tally_rslts(result, agg_victim(prsed), 'VICTIM')
 
 	return result
 
-if __name__ == '__main__':
-	s = 'my/NNS cow/NNS exploded/VBD cow/NNS'
-	p = ['%s cow is cow']
+def p(d):
+	for slot,d1 in d.items():
+		for patt,cnt in d1.items():
+			print slot, patt, cnt
 
-	print find_weapon(s)
+
+if __name__ == '__main__':
+	s = 'my/NNS neat/NNS cow/NNS exploded/VBD cow/NNS exploded/VBD cow/NNS cow/NNS cow/NNS exploded/VBD'
+
+	p(aggregate(s))
 	#for e in find_thing(s, p):
 		#print e
