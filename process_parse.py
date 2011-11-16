@@ -1,8 +1,18 @@
 import os
 import re
+import gen_patterns
 
 DEBUG = False
-PATH="developset/test_dir_parsed_1/" 
+#PATH="developset/test_dir_parsed_1/" 
+PATH="java_parser/test_patterns_out/"
+
+#NP_CHUNK_1="(\(NP\s+(\(.*?\)+?)\))"
+NP_CHUNK_1="\(NP\s+(\(.*?\)+?)\)"
+#NP_CHUNK_2="(\(NP\-TMP\s+(\(.*?\)+?\))"
+NP_CHUNK_2="\NP\-TMP\s+(\(.*?\)+?)\)"
+
+NP_CHUNK_REPL=r"[\1]/NP"
+#NP_CHUNK_2_REPL=r"(\(NP\-TMP\s+\(.*?\)+?\))"
 
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 TAGGED_COMMA = "\s,\/,(?=\s)"  # selects commas in the pos tagged o/p of parser ..should we remove '(single quotes) as well ? 
@@ -10,7 +20,22 @@ COMMA  = ","
 NOUN_DEP = "nn"
 
 # processes the dependency list parse of a line and extracts np from them and adds those np to the pos tagged sentence
-def extract_np(pos_sent,dep_list): # string , num ,tuple immutable , list ,dict mutable 
+
+def extract_np(pos_sent,parse_tree): # string , num ,tuple immutable , list ,dict mutable 
+
+	prev_pattern = "2" # init with some random pattern
+
+	# split sentences by space
+	pos_sent_list = pos_sent.split(" ")
+	# search the list for nn types only for now 
+
+	m1  = re.sub(NP_CHUNK_1,NP_CHUNK_REPL,parse_tree)
+	m2  = re.sub(NP_CHUNK_2,NP_CHUNK_REPL,m1)
+	return m2 	
+	#return " ".join(pos_sent_list)
+
+
+def extract_np2(pos_sent,dep_list): # string , num ,tuple immutable , list ,dict mutable 
 
 	prev_pattern = "2" # init with some random pattern
 
@@ -118,6 +143,7 @@ def pprocess_pfile(filename):
 	fd.close()
 	return (pos_tags_dict,parse_tree_dict,parse_dependency_dict)
 
+
 def main():
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
@@ -126,12 +152,14 @@ def main():
 			# ignore swp files 	
 			if(re.search("\.swp",file)):
 					continue 
-			(pos_tags_dict,parse_dependency_dict,parse_dependency_dict) = pprocess_pfile(root + file)
+			(pos_tags_dict,parse_tree_dict,parse_dependency_dict) = pprocess_pfile(root + file)
 			for sent_no in pos_tags_dict.keys() :
-				sent= extract_np(pos_tags_dict[sent_no],parse_dependency_dict[sent_no])
-				print sent 
+				#sent= extract_np2(pos_tags_dict[sent_no],parse_dependency_dict[sent_no])
+				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
+				print "np chunked sentece "+sent
+				#gen_patterns.match_rules(sent)
+				#match_rules(sent)
 
 if __name__== '__main__':
 	# do something 
 	main()
-
