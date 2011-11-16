@@ -9,7 +9,7 @@ EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
 
 if(len(sys.argv) == 1):
-	print "please enter an input file "
+	print ("please enter an input file ")
 	sys.exit()
 
 input_file = sys.argv[1]
@@ -37,14 +37,15 @@ def process_input_text(file_text,id_name):
 	# remove the \n from in between the lines 
 	file_text = re.sub(NEWLINE," ",file_text)
 	if(DEBUG):
-		print "processing text",file_text 
-		print ""
+		print ("processing text",file_text) 
+		print ("")
 		
 	incident_type = incident_predictor.get_predicted_event(file_text) 
 	parsed_text = parse_file(file_text)
-	print "txt ",parsed_text
+	# call process parsed here to get the processed part we want TODO
+	#print ("txt ",parsed_text)
 	dict_out    = matching.match(parsed_text)
-	print ""
+	#print ("")
 	# call alex's code 
 	print_out(id_name,incident_type,dict_out['WEAPON'],dict_out['PERP INDIV'],dict_out['PERP ORG'],dict_out['TARGET'],dict_out['VICTIM'])
 
