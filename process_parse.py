@@ -205,7 +205,7 @@ def main():
 
 				print "np chunked sentece "+sent
 				print
-				#gen_patterns.match_rules(sent)
+				gen_patterns.match_rules(sent)
 				#match_rules(sent)
 
 if __name__== '__main__':

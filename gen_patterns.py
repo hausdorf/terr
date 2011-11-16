@@ -6,22 +6,22 @@ import sys
 ## TODO HAVE NOT HANDLED PARTICLES RP  ( RP and IN can be confused rite ? ) 
 ## VICTIM PATTERNS 
 ##v_1 = "<NP> VBD VBN"  # i think the stanford parser messes up on 
-v_1_pattern = "\(.*?\)\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN" # change \w+ from .*?
+v_1_pattern = "\[.*?\]\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN" # change \w+ from .*?
 v_1_patt = re.compile(v_1_pattern)
 ##v_2 = "<NP> VBD NN*"  # i think the stanford parser messes up on 
-v_2_pattern = "\(.*?\)\/NP\s+(\w+?)\/VBD\s+(\w+?)\/NN\w{0,2}\s+"
+v_2_pattern = "\[.*?\]\/NP\s+(\w+?)\/VBD\s+(\w+?)\/NN\w{0,2}\s+"
 v_2_patt = re.compile(v_2_pattern)
 ##v_3 = "VBD <NP>"  # the heuristic says passive voice but replacing this with VBD i.e killed VICTIM 
-v_3_pattern = "\s+(\w+?)\/VBD\s+\(.*?\)\/NP"
+v_3_pattern = "\s+(\w+?)\/VBD\s+\[.*?\]\/NP"
 v_3_patt = re.compile(v_3_pattern)
 ##v_4 = "TO VB"  # vb is the base form of the berb 
-v_4_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+\(.*?\)\/NP"  # vb is the base form of the berb 
+v_4_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+\[.*?\]\/NP"  # vb is the base form of the berb 
 v_4_patt = re.compile(v_4_pattern)
 ##v_5 = "VBG <NP>"# gerund 
-v_5_pattern = "\s+(\w+?)\/VBG\s+\(.*?\)\/NP"# gerund 
+v_5_pattern = "\s+(\w+?)\/VBG\s+\[.*?\]\/NP"# gerund 
 v_5_patt = re.compile(v_5_pattern)
 ##v_6 = "noun VBD <NP>" # 
-v_6_pattern = "\s+(\w+?)\/NN\w{0,2}\s+(\w+?)\/VBD\s+\(.*?\)\/NP" # 
+v_6_pattern = "\s+(\w+?)\/NN\w{0,2}\s+(\w+?)\/VBD\s+\[.*?\]\/NP" # 
 v_6_patt = re.compile(v_6_pattern)
 
 
@@ -119,7 +119,7 @@ def ret_fpatterns(patt_type,m):
 		ext_patt=patt_type
 		# case where one pattern extracted # o is string 
 		if(isinstance(o,basestring)):
-				ext_patt += " "+o[i]  
+				ext_patt += " "+o  
 				temp_list.append(ext_patt)
 		else:
 		# case where two patterns need to be extracted # o is tuple 
@@ -134,7 +134,7 @@ def ret_bpatterns(patt_type,m):
 		ext_patt=""
 		# case where one pattern extracted # o is string 
 		if(isinstance(o,basestring)):
-			ext_patt += " "+o[i]  
+			ext_patt += " "+o 
 			ext_patt  = ext_patt.lstrip()	
 			ext_patt += " "+patt_type
 			temp_list.append(ext_patt)
