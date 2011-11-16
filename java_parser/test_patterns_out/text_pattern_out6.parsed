@@ -1,0 +1,13 @@
+the/DT FMLN/NNP tried/VBD to/TO kill/VB abhay/JJ paul/NN ./.
+
+(ROOT (S (NP (DT the) (NNP FMLN)) (VP (VBD tried) (S (VP (TO to) (VP (VB kill) (NP (JJ abhay) (NN paul)))))) (. .)))
+det(FMLN-2, the-1)
+nsubj(tried-3, FMLN-2)
+xsubj(kill-5, FMLN-2)
+root(ROOT-0, tried-3)
+aux(kill-5, to-4)
+xcomp(tried-3, kill-5)
+amod(paul-7, abhay-6)
+dobj(kill-5, paul-7)
+
+*************

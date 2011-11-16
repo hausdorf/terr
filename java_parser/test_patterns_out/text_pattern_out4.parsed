@@ -1,0 +1,13 @@
+Ross/NNP ghalib/NNP was/VBD a/DT victim/NN of/IN shooting/VBG last/JJ night/NN ./.
+
+(ROOT (S (NP (NNP Ross) (NNP ghalib)) (VP (VBD was) (NP (NP (DT a) (NN victim)) (PP (IN of) (NP (VBG shooting)))) (NP-TMP (JJ last) (NN night))) (. .)))
+nn(ghalib-2, Ross-1)
+nsubj(victim-5, ghalib-2)
+cop(victim-5, was-3)
+det(victim-5, a-4)
+root(ROOT-0, victim-5)
+prep_of(victim-5, shooting-7)
+amod(night-9, last-8)
+tmod(victim-5, night-9)
+
+*************

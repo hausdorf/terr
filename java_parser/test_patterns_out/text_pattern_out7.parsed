@@ -1,0 +1,12 @@
+the/DT bomb/NN ended/VBD up/RP killing/VBG abhay/JJ paul/NN ./.
+
+(ROOT (S (NP (DT the) (NN bomb)) (VP (VBD ended) (PRT (RP up)) (S (VP (VBG killing) (NP (JJ abhay) (NN paul))))) (. .)))
+det(bomb-2, the-1)
+nsubj(ended-3, bomb-2)
+root(ROOT-0, ended-3)
+prt(ended-3, up-4)
+xcomp(ended-3, killing-5)
+amod(paul-7, abhay-6)
+dobj(killing-5, paul-7)
+
+*************

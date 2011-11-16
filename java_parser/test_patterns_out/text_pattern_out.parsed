@@ -1,0 +1,15 @@
+President/NNP adbul/JJ ghani/NN was/VBD murdered/VBN last/JJ night/NN by/IN one/CD of/IN his/PRP$ aides/NNS ./.
+
+(ROOT (S (NP (NNP President) (JJ adbul) (NN ghani)) (VP (VBD was) (VP (VBN murdered) (NP-TMP (JJ last) (NN night)) (PP (IN by) (NP (NP (CD one)) (PP (IN of) (NP (PRP$ his) (NNS aides))))))) (. .)))
+nn(ghani-3, President-1)
+amod(ghani-3, adbul-2)
+nsubjpass(murdered-5, ghani-3)
+auxpass(murdered-5, was-4)
+root(ROOT-0, murdered-5)
+amod(night-7, last-6)
+tmod(murdered-5, night-7)
+agent(murdered-5, one-9)
+poss(aides-12, his-11)
+prep_of(one-9, aides-12)
+
+*************

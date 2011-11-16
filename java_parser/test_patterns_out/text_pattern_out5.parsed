@@ -1,0 +1,21 @@
+The/DT bomb/NN killed/VBD abhay/RB paul/JJ yesterday/NN ./.
+
+(ROOT (S (NP (DT The) (NN bomb)) (VP (VBD killed) (NP-TMP (RB abhay) (JJ paul) (NN yesterday))) (. .)))
+det(bomb-2, The-1)
+nsubj(killed-3, bomb-2)
+root(ROOT-0, killed-3)
+advmod(yesterday-6, abhay-4)
+amod(yesterday-6, paul-5)
+tmod(killed-3, yesterday-6)
+
+*************
+Osama/NNP killed/VBD abhay/RB paul/JJ today/NN ./.
+
+(ROOT (S (NP (NNP Osama)) (VP (VBD killed) (ADVP (RB abhay)) (NP-TMP (JJ paul) (NN today))) (. .)))
+nsubj(killed-2, Osama-1)
+root(ROOT-0, killed-2)
+advmod(killed-2, abhay-3)
+amod(today-5, paul-4)
+tmod(killed-2, today-5)
+
+*************
