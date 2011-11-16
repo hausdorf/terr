@@ -1,4 +1,5 @@
 from aslog import groups
+import collections
 
 PATT_WEAP = ['<np> exploded']
 PATT_PIND = ['<np> kidnapped']
@@ -51,42 +52,61 @@ def agg_perp_indiv(prsed):
 	found = list(find_thing(prsed, PATT_PIND))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
 def agg_perp_org(prsed):
 	found = list(find_thing(prsed, PATT_PORG))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
 def agg_target(prsed):
 	found = list(find_thing(prsed, PATT_TARG))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
 def agg_victim(prsed):
 	found = list(find_thing(prsed, PATT_VICT))
 	if len(found) == 0:
 		return '-'
-	return found[0]
+	return found
 
+def tally_rslts(d, rslts, slot):
+	if rslts == '-':
+		return
+
+	for chnk, rslt in rslts:
+		d[slot][rslt] += 1
 
 def aggregate(prsed):
-	result = {'INCIDENT': '-', 'WEAPON': '-', 'PERP INDIV': '-',
-			'PERP ORG': '-', 'TARGET': '-', 'VICTIM': '-'}
+	
+	result = {
+		'INCIDENT': collections.defaultdict(lambda:0),
+		'WEAPON': collections.defaultdict(lambda:0),
+		'PERP INDIV': collections.defaultdict(lambda:0),
+		'PERP ORG': collections.defaultdict(lambda:0),
+		'TARGET': collections.defaultdict(lambda:0),
+		'VICTIM': collections.defaultdict(lambda:0)
+		}
 
-	result['WEAPON'] = agg_weapon(prsed)
-	result['PERP INDIV'] = agg_perp_indiv(prsed)
-	result['PERP ORG'] = agg_perp_org(prsed)
-	result['TARGET'] = agg_target(prsed)
-	result['VICTIM'] = agg_victim(prsed)
+	tally_rslts(result, agg_weapon(prsed), 'WEAPON')
+	tally_rslts(result, agg_perp_indiv(prsed), 'PERP INDIV')
+	tally_rslts(result, agg_perp_org(prsed), 'PERP ORG')
+	tally_rslts(result, agg_target(prsed), 'TARGET')
+	tally_rslts(result, agg_victim(prsed), 'VICTIM')
 
 	return result
+
+def p(d):
+	for slot,d1 in d.items():
+		for patt,cnt in d1.items():
+			print slot, patt, cnt
+
 
 if __name__ == '__main__':
 	s = 'my/NNS neat/NNS cow/NNS exploded/VBD cow/NNS exploded/VBD cow/NNS cow/NNS cow/NNS exploded/VBD'
 
-	print agg_weapon(s)
+	p(aggregate(s))
 	#for e in find_thing(s, p):
 		#print e
