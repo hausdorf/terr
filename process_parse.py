@@ -144,6 +144,33 @@ def pprocess_pfile(filename):
 	return (pos_tags_dict,parse_tree_dict,parse_dependency_dict)
 
 
+def rmv_irrelevant(prsd):
+	spl = prsd.split()
+	lspl = len(spl)
+
+	if lspl < 2:
+		return ''
+
+	wrds = []
+
+	i = 1
+	curr = spl[0]
+	while i < lspl:
+		if curr[0][0] == '(' and spl[i][-1] == ')':
+			wrds.append('%s %s' % (curr, spl[i]))
+
+		curr = spl[i]
+		i += 1
+
+	if len(wrds) > 0:
+		return ' '.join(wrds)
+	else:
+		return ''
+
+
+
+
+
 def main():
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
