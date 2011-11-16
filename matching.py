@@ -30,7 +30,7 @@ def find_thing(prsed, patterns):
 		j = 0
 		while i < lprsedspl and j < lpattspl:
 			curr = prsedspl[i].split('/')[0]
-			if pattspl[j] == '<np>' or curr == pattspl[j]:
+			if pattspl[j] == '<NP>' or curr == pattspl[j]:
 				j += 1
 			else:
 				i -= j
