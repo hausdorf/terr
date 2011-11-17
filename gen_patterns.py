@@ -1,7 +1,7 @@
 import re
 import sys
 
-
+DEBUG = False
 ## BEGIN REGEX 
 ## TODO HAVE NOT HANDLED PARTICLES RP  ( RP and IN can be confused rite ? ) 
 ## VICTIM PATTERNS 
@@ -109,7 +109,8 @@ def get_victim_pattern(sent):
 	if m:
 		temp_list = ret_bpatterns(patt_type,m)
 		extracted_patt += temp_list
-	print "TEST ",extracted_patt
+	if DEBUG:	
+		print "TEST ",extracted_patt
 	return extracted_patt 
 # m is a list of tuples i.e the patterns extracted 	
 def ret_fpatterns(patt_type,m):
@@ -147,9 +148,11 @@ def ret_bpatterns(patt_type,m):
 			ext_patt += " "+patt_type
 			temp_list.append(ext_patt)
 	return temp_list
+# do we want to return all the patterns + (NP+filename)  in 4 dicts # havin an NP will help in judging the results  	
 def match_rules(sent):
 	#get instance patterns for victims 
 	victim_pattern_list = get_victim_pattern(sent)
+	return victim_pattern_list
 	target_pattern_list = get_target_pattern()
 	instrument_pattern_list = get_instrument_pattern()
 	perp_pattern_list = get_perp_pattern()

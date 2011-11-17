@@ -186,9 +186,9 @@ def assemble_extracts(cntnt):
 
 
 
-
-
 def main():
+	rel_patt_list = [] 
+	irrel_patt_list = [] 
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
 			if(DEBUG):
@@ -199,14 +199,21 @@ def main():
 			(pos_tags_dict,parse_tree_dict,parse_dependency_dict) = pprocess_pfile(root + file)
 			for sent_no in pos_tags_dict.keys() :
 				#sent= extract_np2(pos_tags_dict[sent_no],parse_dependency_dict[sent_no])
+				
 				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
 
 				sent = assemble_extracts(sent)
-
-				print "np chunked sentece "+sent
-				print
-				gen_patterns.match_rules(sent)
-				#match_rules(sent)
+				if(DEBUG):
+					print "np chunked sentece "+sent+"\n"
+				if(re.search("\.irrel.parsed",file)):
+					temp_patt_list = gen_patterns.match_rules(sent)
+					irrel_patt_list += temp_patt_list
+				else:
+					temp_patt_list = gen_patterns.match_rules(sent)	
+					rel_patt_list  += temp_patt_list
+		print irrel_patt_list
+		print "***********************" 
+		print rel_patt_list 
 
 if __name__== '__main__':
 	# do something 
