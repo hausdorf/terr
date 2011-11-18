@@ -3,7 +3,7 @@ import re
 import gen_patterns
 import matching
 
-DEBUG = False
+DEBUG = True
 #PATH="developset/test_dir_parsed_1/" 
 PATH="java_parser/test_patterns_out/"
 
@@ -12,7 +12,7 @@ NP_CHUNK_1="\(NP\s+(\(.*?\)+?)\)"
 #NP_CHUNK_2="(\(NP\-TMP\s+(\(.*?\)+?\))"
 NP_CHUNK_2="\NP\-TMP\s+(\(.*?\)+?)\)"
 
-NP_CHUNK_REPL=r"[\1]/NP"
+NP_CHUNK_REPL=r"[ \1 ]/NP"
 #NP_CHUNK_2_REPL=r"(\(NP\-TMP\s+\(.*?\)+?\))"
 
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
@@ -35,37 +35,6 @@ def extract_np(pos_sent,parse_tree): # string , num ,tuple immutable , list ,dic
 	return m2 	
 	#return " ".join(pos_sent_list)
 
-
-def extract_np2(pos_sent,dep_list): # string , num ,tuple immutable , list ,dict mutable 
-
-	prev_pattern = "2" # init with some random pattern
-
-	# split sentences by space
-	pos_sent_list = pos_sent.split(" ")
-	# search the list for nn types only for now 
-	for dep in dep_list:
-		m = re.match(NOUN_DEP,dep)
-		if(m):
-			# read the first nn extract the token numbers 
-			# split by comma 
-			split_arr = dep.split(COMMA)
-			if(prev_pattern == split_arr[0]):
-				continue
-			# save the pattern to avoid next match 
-			prev_pattern = split_arr[0]
-			# left,right for identifying np 
-			right = split_arr[1]
-			left = split_arr[0] 
-			end_index,start_index = extract_num(left,right)
-			if(DEBUG):
-				print "end index",(end_index-1),pos_sent_list[(end_index-1)]
-				print "start",(start_index-1),pos_sent_list[(start_index-1)]
-			
-			# Add paranthesis to the noun phrase 
-			pos_sent_list[(start_index-1)] = "%s %s" %("(",str(pos_sent_list[(start_index-1)]))
-			pos_sent_list[(end_index-1)] = "%s %s" %(str(pos_sent_list[(end_index-1)]),")/NP")
-			
-	return " ".join(pos_sent_list)
 
 # extracts noun phrase range as numbers  from the NN dependency  	
 def extract_num(left,right):
@@ -206,16 +175,22 @@ def main():
 				sent = assemble_extracts(sent)
 				if(DEBUG):
 					print "np chunked sentece "+sent+"\n"
+				print "processing file",file,"\n"	
 				if(re.search("\.irrel.parsed",file)):
-					temp_patt_list = gen_patterns.match_rules(sent)
-					irrel_patt_list += temp_patt_list
+					#temp_patt_list = gen_patterns.match_rules(sent)
+					#print temp_patt_list
+					#irrel_patt_list += temp_patt_list
+					continue
 				else:
-					temp_patt_list = gen_patterns.match_rules(sent)	
+					temp_patt_list,temp_patt_list2,temp_patt_list3 = gen_patterns.match_rules(sent)
+					print temp_patt_list
+					print temp_patt_list2
+					print temp_patt_list3
 					rel_patt_list  += temp_patt_list
 		#print irrel_patt_list
-		#print "***********************" 
-		#print rel_patt_list
-		print matching.aggregate(['seeking cow'], irrel_patt_list)
+		print "***********************" 
+		print rel_patt_list
+		#print matching.aggregate(['seeking cow'], irrel_patt_list)
 
 		#matching.aggregate(p
 
