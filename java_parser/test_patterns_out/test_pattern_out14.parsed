@@ -1,0 +1,12 @@
+john/NN attempted/VBD to/TO kill/VB the/DT king/NN
+
+(ROOT (S (NP (NN john)) (VP (VBD attempted) (S (VP (TO to) (VP (VB kill) (NP (DT the) (NN king))))))))
+nsubj(attempted-2, john-1)
+xsubj(kill-4, john-1)
+root(ROOT-0, attempted-2)
+aux(kill-4, to-3)
+xcomp(attempted-2, kill-4)
+det(king-6, the-5)
+dobj(kill-4, king-6)
+
+*************

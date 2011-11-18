@@ -1,0 +1,9 @@
+John/NNP bombed/VBN the/DT market/NN
+
+(ROOT (S (NP (NNP John)) (VP (VBN bombed) (NP (DT the) (NN market)))))
+nsubj(bombed-2, John-1)
+root(ROOT-0, bombed-2)
+det(market-4, the-3)
+dobj(bombed-2, market-4)
+
+*************

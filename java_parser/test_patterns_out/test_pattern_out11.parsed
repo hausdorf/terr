@@ -1,0 +1,11 @@
+the/DT duck-hunting/JJ fatality/NN was/VBD John/NNP lenon/NNP ./.
+
+(ROOT (S (NP (DT the) (JJ duck-hunting) (NN fatality)) (VP (VBD was) (NP (NNP John) (NNP lenon))) (. .)))
+det(fatality-3, the-1)
+amod(fatality-3, duck-hunting-2)
+nsubj(lenon-6, fatality-3)
+cop(lenon-6, was-4)
+nn(lenon-6, John-5)
+root(ROOT-0, lenon-6)
+
+*************

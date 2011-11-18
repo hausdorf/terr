@@ -1,0 +1,11 @@
+John/NNP lenon/NNP was/VBD killed/VBN with/IN a/DT gun/NN ./.
+
+(ROOT (S (NP (NNP John) (NNP lenon)) (VP (VBD was) (VP (VBN killed) (PP (IN with) (NP (DT a) (NN gun))))) (. .)))
+nn(lenon-2, John-1)
+nsubjpass(killed-4, lenon-2)
+auxpass(killed-4, was-3)
+root(ROOT-0, killed-4)
+det(gun-7, a-6)
+prep_with(killed-4, gun-7)
+
+*************
