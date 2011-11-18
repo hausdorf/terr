@@ -3,9 +3,11 @@ import re
 import gen_patterns
 import matching
 
-DEBUG = True
-#PATH="developset/test_dir_parsed_1/" 
-PATH="java_parser/test_patterns_out/"
+#DEBUG = True
+DEBUG = False
+PATH="developset/test_parsed/" 
+#PATH="java_parser/test_patterns_out/"
+IRREL_PATH="irrel-texts/test_parsed/"
 
 #NP_CHUNK_1="(\(NP\s+(\(.*?\)+?)\))"
 NP_CHUNK_1="\(NP\s+(\(.*?\)+?)\)"
@@ -157,8 +159,34 @@ def assemble_extracts(cntnt):
 
 
 def main():
-	rel_patt_list = [] 
-	irrel_patt_list = [] 
+	v_rel_patt_list = [] 
+	p_rel_patt_list = []
+	w_rel_patt_list = [] 
+	irrel_patt_list = []
+
+	for root,dirs,files in os.walk(IRREL_PATH):
+
+		for file in files:
+			if(DEBUG):
+				print "processing file",file
+			# ignore swp files 	
+			if(re.search("\.swp",file)):
+					continue 
+			(pos_tags_dict,parse_tree_dict,parse_dependency_dict) = pprocess_pfile(root + file)
+			for sent_no in pos_tags_dict.keys() :
+				
+				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
+				sent = assemble_extracts(sent)
+				if(DEBUG):
+					print "np chunked sentece "+sent+"\n"
+				temp_patt_list,temp_patt_list2,temp_patt_list3 = gen_patterns.match_rules(sent)
+#print len(temp_patt_list)
+#				print len(temp_patt_list2)
+#				print len(temp_patt_list3)
+				irrel_patt_list += temp_patt_list + temp_patt_list2 + temp_patt_list3 
+	print "irrel len ",irrel_patt_list
+	print "***********************" 
+		
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
 			if(DEBUG):
@@ -168,28 +196,22 @@ def main():
 					continue 
 			(pos_tags_dict,parse_tree_dict,parse_dependency_dict) = pprocess_pfile(root + file)
 			for sent_no in pos_tags_dict.keys() :
-				#sent= extract_np2(pos_tags_dict[sent_no],parse_dependency_dict[sent_no])
-				
 				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
-
 				sent = assemble_extracts(sent)
 				if(DEBUG):
 					print "np chunked sentece "+sent+"\n"
-				print "processing file",file,"\n"	
-				if(re.search("\.irrel.parsed",file)):
-					#temp_patt_list = gen_patterns.match_rules(sent)
-					#print temp_patt_list
-					#irrel_patt_list += temp_patt_list
-					continue
-				else:
-					temp_patt_list,temp_patt_list2,temp_patt_list3 = gen_patterns.match_rules(sent)
-					print temp_patt_list
-					print temp_patt_list2
-					print temp_patt_list3
-					rel_patt_list  += temp_patt_list
-		#print irrel_patt_list
-		print "***********************" 
-		print rel_patt_list
+				temp_patt_v,temp_patt_w,temp_patt_p = gen_patterns.match_rules(sent)
+#print "victim len",len(temp_patt_list)
+#				print "perp len",len(temp_patt_list2)
+#				print "weapon len",len(temp_patt_list3)
+				v_rel_patt_list += temp_patt_v 
+				w_rel_patt_list += temp_patt_w 
+				p_rel_patt_list += temp_patt_p
+	print v_rel_patt_list
+	print "***********************" 
+	print p_rel_patt_list
+	print "***********************" 
+	print w_rel_patt_list
 		#print matching.aggregate(['seeking cow'], irrel_patt_list)
 
 		#matching.aggregate(p

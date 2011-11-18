@@ -1,6 +1,6 @@
 
 
-remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY"]
+remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","WERE","ALSO","VICTIM","CAR"]
 # REGEXES 
 SEARCH_NP = "\[(.*?)\]\/NP" 
 # NP cleaner 
@@ -32,6 +32,8 @@ def np_cleaner(np):
 	new_wrds = []	
 	for wrd in wrds:
 		wrd = wrd.upper()
+		# if there is a comma then everything after the comma can be thrown ## this is imp !!
+		# if wrd is not a word just punctuation dont add it # this i am not sure abt 
 		if wrd in remove_list: 
 			continue
 		else:
