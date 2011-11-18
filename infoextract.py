@@ -1,6 +1,7 @@
 import sys
 import re
 import incident_predictor
+import preprocess
 
 DEBUG=False
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -33,11 +34,23 @@ def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
 
 # the main function that processes each MUC text and produces the answer key 
 def process_input_text(file_text,id_name):
-	file_text = re.sub(NEWLINE," ",file_text)
+
+	(meta,main) = preprocess.split_text(file_text)
+	if(not meta):
+		print "ERROR IN SPLITTING MAIN AND META"
+		return 
+	print "meta info"+meta
+	print
+	if(not main):
+		print "ERROR IN SPLITTING MAIN AND META"
+		return
+	#TODO ALEX   
+		# ADD YOUR META processing algor HERE .. (meta content is in variable meta)
+	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
-		print ("processing text",file_text) 
+		print ("processing text",main) 
 		print ("")
-	incident_type = incident_predictor.get_predicted_event(file_text) 
+	incident_type = incident_predictor.get_predicted_event(main) 
 	print_out(id_name,incident_type,"-","-","-","-","-")
 
 

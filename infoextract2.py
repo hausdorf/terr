@@ -1,9 +1,10 @@
 import sys,os
 import re
 import incident_predictor
+import preprocess
 import matching
 
-DEBUG=False
+DEBUG=True
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
@@ -34,14 +35,24 @@ def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
 
 # the main function that processes each MUC text and produces the answer key 
 def process_input_text(file_text,id_name):
-	# remove the \n from in between the lines 
-	file_text = re.sub(NEWLINE," ",file_text)
+	# remove the \n from in between the lines
+	(meta,main) = preprocess.split_text(file_text)
+	if (not meta):
+		print "ERROR IN SPLITTING MAIN AND META"
+		return 
+	print "meta info"+meta
+	print
+	if(not main):
+		print "ERROR IN SPLITTING MAIN AND META"
+		return
+	### ADD ALEX CODE 	
+	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
-		print ("processing text",file_text) 
+		print ("processing text",main) 
 		print ("")
 		
-	incident_type = incident_predictor.get_predicted_event(file_text) 
-	parsed_text = parse_file(file_text)
+	incident_type = incident_predictor.get_predicted_event(main) 
+	parsed_text = parse_file(main)
 	# call process parsed here to get the processed part we want TODO
 	#print ("txt ",parsed_text)
 	dict_out    = matching.match(parsed_text)
@@ -95,7 +106,6 @@ def	process_file():
 #return text
 
 def main():
-	# read the file name
 	process_file()
 	# close the answer.templates file 
 	f_out.close()
