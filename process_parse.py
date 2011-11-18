@@ -157,7 +157,9 @@ def rmv_irrelevant(prsd):
 	curr = spl[0]
 	while i < lspl:
 		if curr[0][0] == '(' and spl[i][-1] == ')':
-			wrds.append('%s %s' % (curr, spl[i]))
+			s1 = curr.strip('(')
+			s2 = spl[i].strip(')')
+			wrds.append('%s/%s' % (s2, s1))
 
 		curr = spl[i]
 		i += 1
@@ -166,6 +168,21 @@ def rmv_irrelevant(prsd):
 		return ' '.join(wrds)
 	else:
 		return ''
+
+def assemble_extracts(cntnt):
+	extrcts = []
+
+	spl = re.split('(\[.*?\]\/NP)', cntnt)
+	for e in spl:
+
+		if e[0] == '[' and e[-3:] == '/NP':
+			extrcts.append(e)
+			continue
+
+		extrct = rmv_irrelevant(e)
+		if extrct != '':
+			extrcts.append(extrct)
+	return ' '.join(extrcts)
 
 
 
@@ -183,7 +200,11 @@ def main():
 			for sent_no in pos_tags_dict.keys() :
 				#sent= extract_np2(pos_tags_dict[sent_no],parse_dependency_dict[sent_no])
 				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
+
+				sent = assemble_extracts(sent)
+
 				print "np chunked sentece "+sent
+				print
 				#gen_patterns.match_rules(sent)
 				#match_rules(sent)
 
