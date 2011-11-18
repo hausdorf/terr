@@ -1,6 +1,7 @@
 import os
 import re
 import gen_patterns
+import matching
 
 DEBUG = False
 #PATH="developset/test_dir_parsed_1/" 
@@ -211,9 +212,12 @@ def main():
 				else:
 					temp_patt_list = gen_patterns.match_rules(sent)	
 					rel_patt_list  += temp_patt_list
-		print irrel_patt_list
-		print "***********************" 
-		print rel_patt_list 
+		#print irrel_patt_list
+		#print "***********************" 
+		#print rel_patt_list
+		print matching.aggregate(['seeking cow'], irrel_patt_list)
+
+		#matching.aggregate(p
 
 if __name__== '__main__':
 	# do something 
