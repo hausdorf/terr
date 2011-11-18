@@ -212,9 +212,6 @@ def main():
 	print p_rel_patt_list
 	print "***********************" 
 	print w_rel_patt_list
-		#print matching.aggregate(['seeking cow'], irrel_patt_list)
-
-		#matching.aggregate(p
 
 if __name__== '__main__':
 	# do something 

@@ -2,6 +2,7 @@ import sys
 import re
 import incident_predictor
 import preprocess
+from meta import proc_meta
 
 DEBUG=False
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -39,19 +40,17 @@ def process_input_text(file_text,id_name):
 	if(not meta):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return 
-	print "meta info"+meta
-	print
+	#print "meta info"+meta
+	#print
 	if(not main):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
-	#TODO ALEX   
-		# ADD YOUR META processing algor HERE .. (meta content is in variable meta)
+
 	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
 		print ("processing text",main) 
 		print ("")
 	incident_type = incident_predictor.get_predicted_event(main) 
-	print_out(id_name,incident_type,"-","-","-","-","-")
 
 
 

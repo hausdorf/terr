@@ -6,10 +6,10 @@ def find_communique(data):
 	rslt = []
 
 	for i in range(ldata):
-		if data[i] == '[COMMUNIQUE]':
+		if data[i][:12] == '[COMMUNIQUE]':
+			rslt.append(data[i][12:])
 			while i+1 < ldata:
 				curr = data[i+1]
-				print curr
 				rslt.append(curr)
 				if curr.count(']') > 0:
 					return ' '.join(rslt)
