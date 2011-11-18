@@ -3,6 +3,7 @@ import re
 import incident_predictor
 import preprocess
 import matching
+from meta import proc_meta
 
 DEBUG=True
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -46,6 +47,8 @@ def process_input_text(file_text,id_name):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
 	### ADD ALEX CODE 	
+	print proc_meta(meta)
+
 	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
 		print ("processing text",main) 
