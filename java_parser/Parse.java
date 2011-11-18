@@ -25,9 +25,9 @@ class Parse {
 	  static String backup_parser = "englishPCFG.ser.gz";
 	  static String out_prefix =".parsed";
 	  //static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir";
-	  static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/irrel-texts/texts";
+	  static String input_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_set/pptexts";
 	  //static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_dir_parsed/";
-	  static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/irrel-texts/texts_parsed/";
+	  static String out_dir_path = "/home/vishayv/nlp_ee_project/terr/developset/test_set/texts_parsed/";
 	  static File dir ; 
 	  public static void createOutDir(){
 
