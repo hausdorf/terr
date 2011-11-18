@@ -1,8 +1,8 @@
 import os, re, stat
 
 # WHERE YOU PUT OUR DATA
-PATH = 'developset/texts/'  # Old data
-REPL_DIR = 'developset/pptexts/'       # Processed data
+PATH = 'developset/test_set/texts/'  # Old data
+REPL_DIR = 'developset/test_set/pptexts/'       # Processed data
 
 # REGEXES
 ANY_TAG = '\[[\s\S]+?\]' # Finds any thing inside brackets, e.g. [TEXT]
