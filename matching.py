@@ -43,7 +43,7 @@ def cmp(irr, rel):
 	for r in rel:
 			r_spl = r.split(':')
 			#rel_set[r.split(':')[-1]].append(r)
-			rel_set[r_spl[-1]].append(r_spl[:-1])
+			rel_set[r_spl[-1].strip()].append(r_spl[:-1])
 
 	rel_dict = collections.defaultdict(lambda:0)
 	for r in rel:
