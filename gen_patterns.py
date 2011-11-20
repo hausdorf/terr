@@ -8,46 +8,68 @@ DEBUG = False
 ## VICTIM PATTERNS 
 
 v_1_pattern_str = "NP VBD VBN"
-v_1_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN" # change \w+ from .*?
+#v_1_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN" # change \w+ from .*?
+v_1_pattern = "(\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN" # change \w+ from .*?
 v_1_patt = re.compile(v_1_pattern)
 
 v_2_pattern_str = "NP VBD NN"	
-v_2_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VBD\s+(\[.*?\])\/NP\s+"
+v_2_pattern = "(\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\[.*?\])\/NP\s+"
 v_2_patt = re.compile(v_2_pattern)
 
 v_3_pattern_str = "VBD NP"
-v_3_pattern = "\s+(\w+?)\/VBD\s+(\[.*?\])\/NP"
+v_3_pattern = "\s+(\w+?)\/VBD\s+(\[[^/]*?\])\/NP"
 v_3_patt = re.compile(v_3_pattern)
 
 v_4_pattern_str = "VB(all) TO VB NP"
-v_4_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+(\[.*?\])\/NP"  # vb is the base form of the berb 
+v_4_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP"  # vb is the base form of the berb 
 v_4_patt = re.compile(v_4_pattern)
 
 v_5_pattern_str = "VBG NP"
-v_5_pattern = "\s+(\w+?)\/VBG\s+(\[.*?\])\/NP"# gerund 
+v_5_pattern = "\s+(\w+?)\/VBG\s+(\[[^/]*?\])\/NP"# gerund 
 v_5_patt = re.compile(v_5_pattern)
 
 v_6_pattern_str = "NN VBD NP"
-v_6_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VBD\s+(\[.*?\])\/NP" # fatality was victim  
+v_6_pattern = "(\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\[[^/]*?\])\/NP" # fatality was victim  
 v_6_patt = re.compile(v_6_pattern)
 
+# the most successful Pattern ( got from Target ) 	
+v_7_pattern_str = "NN IN NP" # bomb against 	
+v_7_pattern = "(\[[^/]+?\])\/NP\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP" ## ? check 
+v_7_patt = re.compile(v_7_pattern)
 
 ## PERP PATTERNS 
 
 p_1_pattern_str = "NP VB(all)"	
-p_1_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VB\w{0,1}"
+p_1_pattern = "(\[[^/]*?\])\/NP\s+(\w+?)\/VB\w{0,1}"
 p_1_patt = re.compile(p_1_pattern)
 
 p_2_pattern_str = "NP VBD TO VB"	
-p_2_pattern = "(\[.*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/TO\s+(\w+?)\/VB" #e.g <perp> attempted to kill
+p_2_pattern = "(\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/TO\s+(\w+?)\/VB" #e.g <perp> attempted to kill
 p_2_patt = re.compile(p_2_pattern)
 
 
 ## WEAPON PATTERNS 
 
 w_1_pattern_str = "VB IN NP"	
-w_1_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/IN\s+(\[.*?\])\/NP"
+w_1_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP"
 w_1_patt    = re.compile(w_1_pattern)
+
+## TARGET PATTERNS 
+t_1_patt_str = "VB(all) TO VB NP"	
+t_1_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP"  # VB is the base verb phrase
+t_1_patt = re.compile(t_1_pattern)
+
+t_2_patt_str = "VBD NP"	
+t_2_pattern = "\s+(\w+?)\/VB\w{0,1}\s+(\[[^/]*?\])\/NP"
+t_2_patt  = re.compile(t_2_pattern)
+
+t_3_patt_str = "NN IN NP" # bomb against 	
+t_3_pattern = "(\[[^/]+?\])\/NP\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP" ## ? check 
+t_3_patt = re.compile(t_3_pattern)
+
+t_4_patt_str = "VBD VB(all) prep NP" # was aimed at target	
+t_4_pattern = "\s+(\w+?)\/VBD\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP"
+t_4_patt    = re.compile(t_4_pattern)
 
 
 ## END REGEX 
@@ -77,8 +99,32 @@ def get_perp_pattern(sent):
 		extracted_patt += temp_list
 
 	# return list 	
-	return extracted_patt 	
-		
+	return extracted_patt 
+
+def get_target_pattern(sent):
+
+	extracted_patt = [] 
+	patt_type="<TARGET>"
+	m = t_1_patt.findall(sent) 
+	if m:
+		temp_list = ret_bpatterns(patt_type,m,t_1_patt_str)
+		extracted_patt += temp_list
+	m = t_2_patt.findall(sent) 
+	if m:
+		temp_list = ret_bpatterns(patt_type,m,t_2_patt_str)
+		extracted_patt += temp_list
+	m = t_3_patt.findall(sent) 
+	if m:
+		temp_list = ret_bpatterns(patt_type,m,t_3_patt_str)
+		extracted_patt += temp_list
+	m = t_4_patt.findall(sent) 
+	if m:
+		temp_list = ret_bpatterns(patt_type,m,t_4_patt_str)
+		extracted_patt += temp_list
+
+	# return list 	
+	return extracted_patt 
+
 def get_victim_pattern(sent):
 	
 	extracted_patt = [] 
@@ -113,6 +159,11 @@ def get_victim_pattern(sent):
 	if m:
 		temp_list = ret_bpatterns(patt_type,m,v_6_pattern_str)
 		extracted_patt += temp_list
+	m = v_7_patt.findall(sent)
+	if m:
+		temp_list = ret_bpatterns(patt_type,m,v_7_pattern_str)
+		extracted_patt += temp_list
+	
 	if DEBUG:	
 		print "Extracted Victim phrase list  ",extracted_patt
 	return extracted_patt 
@@ -131,7 +182,7 @@ def ret_fpatterns(patt_type,m,patt_str):
 		# o is always a tuple 
 		for i in xrange(len(o)):
 			ext_patt += " "+o[i]
-		if(patt_str == "NP VBD NN"):
+		if(patt_str == "NP VBD NN" ):
 			ext_patt = remove_npstuff(ext_patt)
 		# ADD the NP: thing to the extracted pattern  now the patt becomes NP:PATT_STR:EXTRACTED_PATT 
 		ext_patt = np +":" + ext_patt	
@@ -152,7 +203,7 @@ def ret_bpatterns(patt_type,m,patt_str):
 		for i in xrange(len(o)):
 			ext_patt += " "+o[i]
 		# once we have the whole string do the foll 	
-		if(patt_str == "NN VBD NP"):
+		if(patt_str == "NN VBD NP" or patt_str == "NN IN NP"):
 			ext_patt = remove_npstuff(ext_patt)
 		ext_patt += " "+patt_type
 		# ADD the NP: thing to the extracted pattern  now the patt becomes NP:PATT_STR:EXTRACTED_PATT 
@@ -180,9 +231,11 @@ def remove_npstuff(sent):
 
 # do we want to return all the patterns + (NP+filename)  in 4 dicts # havin an NP will help in judging the results  	
 def match_rules(sent):
+	target_pattern_list = get_target_pattern(sent)
 	#get instance patterns for victims 
 	victim_pattern_list = get_victim_pattern(sent)
 	inst_pattern_list = get_instrument_pattern(sent)
 	perp_pattern_list = get_perp_pattern(sent)
-	return (victim_pattern_list,inst_pattern_list,perp_pattern_list)
+	return (target_pattern_list,victim_pattern_list,inst_pattern_list,perp_pattern_list)
+	#return (victim_pattern_list,inst_pattern_list,perp_pattern_list)
 	
