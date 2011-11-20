@@ -5,9 +5,11 @@ import matching
 
 #DEBUG = True
 DEBUG = False
-PATH="developset/test_parsed/" 
-#PATH="java_parser/test_patterns_out/"
-IRREL_PATH="irrel-texts/test_parsed/"
+PATH_TEST = "java_parser/test_patt2_out/"
+PATH="developset/pptexts_parsed/" 
+PATH_2="developset/test_set/full_parsed/" 
+IPATH="java_parser/test_patterns_out/"
+IRREL_PATH="irrel-texts/texts_parsed/"
 
 #NP_CHUNK_1="(\(NP\s+(\(.*?\)+?)\))"
 NP_CHUNK_1="\(NP\s+(\(.*?\)+?)\)"
@@ -159,10 +161,19 @@ def assemble_extracts(cntnt):
 
 
 def main():
+
+	# open output files 
+	target_fd = open("target_out",'w')
+	victim_fd = open("victim_out",'w')
+	perp_fd = open("perp_out",'w')
+	weapon_fd = open("weapon_out",'w')
+	# init patterns lists 
+	t_rel_patt_list = [] 
 	v_rel_patt_list = [] 
 	p_rel_patt_list = []
 	w_rel_patt_list = [] 
 	irrel_patt_list = []
+
 
 	for root,dirs,files in os.walk(IRREL_PATH):
 
@@ -177,16 +188,18 @@ def main():
 				
 				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
 				sent = assemble_extracts(sent)
-				if(DEBUG):
-					print "np chunked sentece "+sent+"\n"
-				temp_patt_list,temp_patt_list2,temp_patt_list3 = gen_patterns.match_rules(sent)
+				#if(DEBUG):
+				#print "np chunked sentece "+sent+"\n"
+				temp_patt_list0,temp_patt_list1,temp_patt_list2,temp_patt_list3 = gen_patterns.match_rules(sent)
 #print len(temp_patt_list)
 #				print len(temp_patt_list2)
 #				print len(temp_patt_list3)
-				irrel_patt_list += temp_patt_list + temp_patt_list2 + temp_patt_list3 
+				irrel_patt_list += temp_patt_list0 +temp_patt_list1 + temp_patt_list2 + temp_patt_list3 
 	#print "irrel len ",irrel_patt_list
 	#print "***********************" 
-		
+	print "no of irrel patt",len(irrel_patt_list)	
+
+
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
 			if(DEBUG):
@@ -198,22 +211,80 @@ def main():
 			for sent_no in pos_tags_dict.keys() :
 				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
 				sent = assemble_extracts(sent)
-				if(DEBUG):
-					print "np chunked sentece "+sent+"\n"
-				temp_patt_v,temp_patt_w,temp_patt_p = gen_patterns.match_rules(sent)
+#if(DEBUG):
+#					print "np chunked sentece "+sent+"\n"
+				temp_patt_t,temp_patt_v,temp_patt_w,temp_patt_p = gen_patterns.match_rules(sent)
 #print "victim len",len(temp_patt_list)
 #				print "perp len",len(temp_patt_list2)
 #				print "weapon len",len(temp_patt_list3)
+				t_rel_patt_list += temp_patt_t 
 				v_rel_patt_list += temp_patt_v 
 				w_rel_patt_list += temp_patt_w 
 				p_rel_patt_list += temp_patt_p
+			
+	print "the number of target patterns after dev ",len(t_rel_patt_list)
+	print "the number of victim patterns after dev ",len(v_rel_patt_list)
+	print "the number of perp patterns after dev",len(p_rel_patt_list)
+	print "the number of weapon patterns after dev ",len(w_rel_patt_list)
+	for root, dirs, files in os.walk(PATH_2):
+		for file in files:
+			if(DEBUG):
+				print "processing file",file
+			# ignore swp files 	
+			if(re.search("\.swp",file)):
+					continue 
+			(pos_tags_dict,parse_tree_dict,parse_dependency_dict) = pprocess_pfile(root + file)
+			for sent_no in pos_tags_dict.keys() :
+				sent= extract_np(pos_tags_dict[sent_no],parse_tree_dict[sent_no])
+				sent = assemble_extracts(sent)
+				#	if(DEBUG):
+				#	print "np chunked sentece "+sent+"\n"
+				temp_patt_t,temp_patt_v,temp_patt_w,temp_patt_p = gen_patterns.match_rules(sent)
+#print "victim len",len(temp_patt_list)
+#				print "perp len",len(temp_patt_list2)
+#				print "weapon len",len(temp_patt_list3)
+				t_rel_patt_list += temp_patt_t 
+				v_rel_patt_list += temp_patt_v 
+				w_rel_patt_list += temp_patt_w 
+				p_rel_patt_list += temp_patt_p
+		
 	#print v_rel_patt_list
 	#print "***********************" 
 	#print p_rel_patt_list
 	#print "***********************" 
 	#print w_rel_patt_list
-	rel_set = matching.cmp(irrel_patt_list, v_rel_patt_list)
-	print rel_set
+	print "the number of target patterns after dev ",len(t_rel_patt_list)
+	print "the number of victim patterns after test",len(v_rel_patt_list)
+	print "the number of perp patterns after test",len(p_rel_patt_list)
+	print "the number of weapon patterns after test",len(w_rel_patt_list)
+	t_rel_set = matching.cmp(irrel_patt_list, t_rel_patt_list)
+	for target_patt in t_rel_set:
+		s = "(%s)"%(target_patt,)
+		target_fd.write(s)
+		target_fd.write("\n")
+
+	v_rel_set = matching.cmp(irrel_patt_list, v_rel_patt_list)
+	for victim_patt in v_rel_set:
+		s = "(%s)"%(victim_patt,)
+		victim_fd.write(s)
+		victim_fd.write("\n")
+	p_rel_set = matching.cmp(irrel_patt_list, p_rel_patt_list)
+	for perp_patt in p_rel_set:
+		s = "(%s)"%(perp_patt,)
+		perp_fd.write(s)
+		perp_fd.write("\n")
+	if(len(w_rel_patt_list) > 0):
+		w_rel_set = matching.cmp(irrel_patt_list, w_rel_patt_list)
+		for weapon_patt in w_rel_set:
+			s = "(%s)"%(weapon_patt,)
+			weapon_fd.write(s)
+			weapon_fd.write("\n")
+	else:
+		print "no patterns found for weapon WTF "
+	#print rel_set
+	victim_fd.close()
+	perp_fd.close()
+	weapon_fd.close()
 
 if __name__== '__main__':
 	# do something 
