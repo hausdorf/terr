@@ -41,7 +41,9 @@ def cmp(irr, rel):
 
 	rel_set = collections.defaultdict(lambda:[])
 	for r in rel:
-			rel_set[r.split(':')[-1]].append(r)
+			r_spl = r.split(':')
+			#rel_set[r.split(':')[-1]].append(r)
+			rel_set[r_spl[-1]].append(r_spl[:-1])
 
 	rel_dict = collections.defaultdict(lambda:0)
 	for r in rel:
@@ -51,11 +53,11 @@ def cmp(irr, rel):
 	for patt,cnt in rel_dict.items():
 			tot = cnt + irr_dict[patt]
 			scr = (cnt/tot) * math.log(tot,2)
-			print scr
+			#print scr
 			if scr > 0.5:
 					res.append((patt,scr,rel_set[patt]))
 
-	res.sort(key=lambda(x,y,z):y)
+	res.sort(key=lambda(x,y,z):y,reverse=True)
 
 	return res
 
