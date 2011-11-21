@@ -45,26 +45,12 @@ def process_input_text(file_text,id_name):
 	if(not main):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
-	#TODO ALEX   
-		# ADD YOUR META processing algor HERE .. (meta content is in variable meta)
-	perporg = proc_meta(meta)
-	if perporg:
-		perporg = perporg.strip('[').strip(']')
-		perporg = perporg.split(',')[0]
-		perporg = perporg.split('(')[0]
-		print perporg
 
 	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
 		print ("processing text",main) 
 		print ("")
 	incident_type = incident_predictor.get_predicted_event(main) 
-
-	if perporg:
-		print 'HERE'
-		print_out(id_name,incident_type,"-","-",perporg,"-","-")
-	else:
-		print_out(id_name,incident_type,"-","-","-","-","-")
 
 
 
