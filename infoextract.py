@@ -51,6 +51,7 @@ def process_input_text(file_text,id_name):
 		print ("processing text",main) 
 		print ("")
 	incident_type = incident_predictor.get_predicted_event(main) 
+	print_out(id_name,incident_type,"-","-","-","-","-")
 
 
 
