@@ -1,8 +1,11 @@
 import re
 
 DEBUG = False
-# PERPETRATORS ARE UNIDENTIFIED PERSON / MEN or contains this 
-remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","WERE","ALSO","VICTIM","CAR"]
+# Remove everything befor president 
+# RED FLAG VICTIMS/organization perpatrators = [organization,military,infantry,]
+# PERPETRATORS ARE UNIDENTIFIED PERSON / MEN or contains this
+# BY is a NP
+remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","WERE","ALSO","VICTIM","CAR","WHILE","FORMER","SAME","NIGHT","BY","AS","QUALIFICATIONS","WHO","KILLED","ALSO","HAVE","LEARNED","WE","SAME","PLACE","IN"]
 # REGEXES 
 SEARCH_NP = "\[(.*?)\]\/NP" 
 # NP cleaner 
@@ -77,7 +80,8 @@ def remove_subsets(np_l):
 		if np:
 			np_list.append(np)
 
-	print "np_list",np_list
+	if(DEBUG):
+		print "np_list",np_list
 	# sort list 
 	np_list.sort(key=lambda(x):len(x))
 	# create a binary list of same len as np list and set all elements to 0 , ( 0, not added to new list ,1 = added to new list ) 
@@ -98,14 +102,24 @@ def remove_subsets(np_l):
 				m = re.search(pattern,source_np,re.IGNORECASE)
 				if m:
 					if (DEBUG):
-						print "one is a subset of another ",pattern,source_np
+						if(DEBUG):
+							print "one is a subset of another ",pattern,source_np
 					np_list_bin[j] = 1
 		np_list_bin[i]	= 1		
 		np_list_new.append(patt)
-	return np_list_new 
+	return np_list_new
+
+def f_read(filename):
+
+	fd = open(filename)
+	text = fd.read()
+	fd.close()
+return text 
 
 if __name__ =="__main__":
 	test_list = ["aa","aaaaaaa asdfs","aa sg asgasg","ia asgs aa"]
-	print "original list",test_list
+	if(DEBUG):
+		print "original list",test_list
 	l = remove_subsets(test_list)
-	print l
+	if(DEBUG):
+		print l
