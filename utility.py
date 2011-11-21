@@ -114,7 +114,7 @@ def f_read(filename):
 	fd = open(filename)
 	text = fd.read()
 	fd.close()
-return text 
+	return text 
 
 if __name__ =="__main__":
 	test_list = ["aa","aaaaaaa asdfs","aa sg asgasg","ia asgs aa"]
