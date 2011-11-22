@@ -56,6 +56,12 @@ def process_input_text(file_text,id_name):
 		return
 	#print proc_meta(meta)
 		
+	temp_victim_list = []
+	final_victim_set =set([])
+	temp_target_list = []
+	final_target_set = set([])
+	temp_perpi_list = []
+	final_perpi_set = set([])
 
 	file_text = re.sub(NEWLINE," ",main)
 	file_text_list = file_text.split('\n')
@@ -70,6 +76,10 @@ def process_input_text(file_text,id_name):
 	# open file containing victim patterns
 	text = utility.f_read('victim_out_patterns_regex2')
   	victim_patt_lines = text.split('\n')
+	text = utility.f_read('target_out_patterns_regex2') # has only back patt
+  	target_patt_lines = text.split('\n')
+	text = utility.f_read('perp_out_patterns_regex2') # has both front and back patterns 
+  	perp_patt_lines = text.split('\n')
 	# ALGO read one line at a time .. if it matches one of the patterns then parse that line and do ur thing 
 
 
@@ -78,16 +88,67 @@ def process_input_text(file_text,id_name):
 		line = line.strip()
 		if(not line):
 			continue
-		#print "processing line",line	
-		# make sure no consecutive white spaces in ur line	
-		input_line = re.sub(COLL_SPACES,SPACES_REPL,line)	
-		victim_list = pattern_extractor.get_victims(input_line,victim_patt_lines)
-		if victim_list:
-			print victim_list
-			print "###########################"
-		# now use algorithms to clean this list and to remove redundant stuff 
-		# get target_list 
-			
+
+		# split each line into several sentences
+		sents = utility.sent_splitter(line)
+		for sent in sents:
+			#print "processing line",line	
+			# make sure no consecutive white spaces in ur line
+			sent  = sent.strip()
+			input_line = re.sub(COLL_SPACES,SPACES_REPL,sent)
+			print "###PROCESSING SENT ",input_line
+			#temp_victim_list = pattern_extractor.get_victims(input_line,victim_patt_lines)
+			#if temp_victim_list:
+			#	for victim in temp_victim_list:
+			#		victim  = victim.strip()
+			#		if victim:
+			#			final_victim_set.add(victim)
+			# TARGET LIST
+			#temp_target_list = pattern_extractor.get_targets(input_line,target_patt_lines)
+			#if temp_target_list:
+			#	for target in temp_target_list:
+			#		target = target.strip()
+			#		if target:
+			#			final_target_set.add(target)
+			temp_perpi_list = pattern_extractor.get_perpi(input_line,perp_patt_lines)
+			if temp_perpi_list:
+				for perp in temp_perpi_list:
+					perp = perp.strip()
+					if perp:
+						final_perpi_set.add(perp)
+
+
+			# now use algorithms to clean this list and to remove redundant stuff 
+			# get target_list
+
+	# subset removal
+	#v_new_list = list(final_victim_set)
+	#v_new_list  = utility.remove_subsets(v_new_list)	
+	#print "####after subset removal"
+	#print v_new_list
+	#v_new_list = utility.remove_syn(v_new_list)
+	#print "####after duplicate removal"
+	#print v_new_list
+	#print "###########################"
+
+	#t_new_list  = list(final_target_set)
+	#t_new_list  = utility.remove_subsets(t_new_list)	
+	#print "####after subset removal"
+	#print t_new_list
+	#t_new_list = utility.remove_syn(t_new_list)
+	#print "####after duplicate removal"
+	#print t_new_list
+	#print "###########################"
+
+	p_new_list  = list(final_perpi_set)
+	p_new_list  = utility.remove_subsets(p_new_list)	
+	print "####after subset removal"
+	print p_new_list
+	p_new_list = utility.remove_syn(p_new_list)
+	print "####after duplicate removal"
+	print p_new_list
+	print "###########################"
+
 	#dict_out    = matching.match(parsed_text)
 	#print ("")
 	#print_out(id_name,incident_type,dict_out['WEAPON'],dict_out['PERP INDIV'],dict_out['PERP ORG'],dict_out['TARGET'],dict_out['VICTIM'])
