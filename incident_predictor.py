@@ -43,22 +43,36 @@ def get_attack_count(text):
 	count = 0
 	## AM NOT ADDING DEAD HERE AS LOTS OF INCEDENTS CAN HAVE DEAD ???? also 1013 has machinegunned ?? should we have gunned ? terrorist gunned ?
 	## DEath of jesuit priest is a common occurence !!
-	m = re.findall("(dynamite|bomb|bombing)\sattack",text,re.IGNORECASE|re.MULTILINE)
+	m = re.findall("(dynamite|bomb|bombing)\s+attack",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count = 0
 	else :
 		m = re.findall("(?<=\s)attack",text,re.IGNORECASE|re.MULTILINE)
 		if(m):
-			count = len(m)
+			#count = len(m)
+			count = 0
 	m = re.findall("(?<=\s)murder",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-	#m = re.findall("(?<=\s)kill",text,re.IGNORECASE|re.MULTILINE) ## ambiguous ?? could conflict with bomb attack 
-#	if(m):
-#		count += len(m)
+	m = re.findall("(?<=\s)machinegun\s+attack",text,re.IGNORECASE|re.MULTILINE) ## ambiguous ?? could conflict with bomb attack 
+	if(m):
+		count += 3*len(m)
+	m = re.findall("(?<=\s)mortar",text,re.IGNORECASE|re.MULTILINE) ## ambiguous ?? could conflict with bomb attack 
+	if(m):
+		count += 3*len(m)
 	m = re.findall("(?<=\s)shot",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
+
+	m = re.findall("(?<=\s)shoot\-out",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 2*len(m)
+	m = re.findall("(?<=\s)firing",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += len(m)
+	m = re.findall("(?<=\s)MOLOTOV",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 4*len(m)
 	m = re.findall("(?<=\s)assassinat",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 2*len(m)
@@ -78,15 +92,25 @@ def get_bomb_count(text):
 	m = re.findall("(?<=\s)bombed rebel",text,re.IGNORECASE|re.MULTILINE) # discount bomb if followed  by rebel
 	if(m):
 		count = 0
+	m = re.findall("(?<=\s)detonated",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 5*len(m)
 	m = re.findall("(?<=\s)explod",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 2*len(m)
 	m = re.findall("(?<=\s)explosi",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
+
+	m = re.findall("(?<=\s)car\-bomb",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
+	m = re.findall("(?<=\s)explosive\s+device",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 2*len(m)
 	m = re.findall("(?<=\s)dynamite",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
-		count += len(m)
+		count += 3*len(m)
 	m = re.findall("(?<=\s)blowing\-up",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += (2)*len(m)
@@ -105,6 +129,10 @@ def get_kidnap_count(text):
 	m = re.findall("(?<=\s)abduct",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 3*len(m)
+
+	m = re.findall("(?<=\s)disappear",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
 	if(DEBUG):
 		print (" kidnap ************************************ count ",count)
 	return count 
@@ -113,10 +141,10 @@ def get_robbery_count(text):
 	count = 0 
 	m = re.findall("(?<=\s)stole(?=\s)",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind 
 	if(m):
-		count = len(m) 
+		count = 2*len(m) 
 	m = re.findall("(?<=\s)steal",text,re.IGNORECASE|re.MULTILINE) # look behind   
 	if(m):
-		count += len(m)
+		count += 2*len(m)
 	m = re.findall("(?<=\s)robbery(?=\s)",text,re.IGNORECASE|re.MULTILINE) # look ahead and look behind
 	if(m):
 		count += 4*len(m) 
@@ -132,6 +160,8 @@ def get_robbery_count(text):
 		
 def get_predicted_event(text):
 
+	#TODO REMOVE MULTIPLE SPACES TO ONE 
+	# REMOVE "" because "KIDNAPPED"
 	# init dictionary 
 	event_type = {} 
 	# arson count 
