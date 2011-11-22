@@ -2,13 +2,23 @@ import sys,os
 import re
 import incident_predictor
 import preprocess
+import utility
+import pattern_extractor
 import matching
 from meta import proc_meta
 
-DEBUG=True
+#DEBUG=True
+DEBUG=False
+
+# REGEX PATTERNS 
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
+COLL_SPACES = "\s+"
+SPACES_REPL = " "
+
+
+
 
 if(len(sys.argv) == 1):
 	print ("please enter an input file ")
@@ -41,39 +51,46 @@ def process_input_text(file_text,id_name):
 	if (not meta):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return 
-	print "meta info"+meta
-	print
 	if(not main):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
-	### ADD ALEX CODE 	
-	print proc_meta(meta)
+	#print proc_meta(meta)
+		
 
 	file_text = re.sub(NEWLINE," ",main)
+	file_text_list = file_text.split('\n')
 	if(DEBUG):
 		print ("processing text",main) 
 		print ("")
-		
+	
+	# pass file text instead of main in infoextract2.py 	
 	incident_type = incident_predictor.get_predicted_event(main) 
-	parsed_text = parse_file(main)
-	# call process parsed here to get the processed part we want TODO
-	#print ("txt ",parsed_text)
-	dict_out    = matching.match(parsed_text)
+	# TODO NER CALL A FUNCTION THAT returns NER DICT
+
+	# open file containing victim patterns
+	text = utility.f_read('victim_out_patterns_regex2')
+  	victim_patt_lines = text.split('\n')
+	# ALGO read one line at a time .. if it matches one of the patterns then parse that line and do ur thing 
+
+
+	# READ EACH LINE IN THE from input file   
+	for line in file_text_list:
+		line = line.strip()
+		if(not line):
+			continue
+		#print "processing line",line	
+		# make sure no consecutive white spaces in ur line	
+		input_line = re.sub(COLL_SPACES,SPACES_REPL,line)	
+		victim_list = pattern_extractor.get_victims(input_line,victim_patt_lines)
+		if victim_list:
+			print victim_list
+			print "###########################"
+		# now use algorithms to clean this list and to remove redundant stuff 
+		# get target_list 
+			
+	#dict_out    = matching.match(parsed_text)
 	#print ("")
-	# call alex's code 
-	print_out(id_name,incident_type,dict_out['WEAPON'],dict_out['PERP INDIV'],dict_out['PERP ORG'],dict_out['TARGET'],dict_out['VICTIM'])
-
-def parse_file(text):
-
-	fj = open("text.txt",'w')
-	fj.write(text)
-	fj.close()
-	os.system("java -mx1000m -cp .:./stanford-parser.jar ParseFast ")
-	fo = open("text_out.txt")
-	txt = fo.read()
-	return txt 
-	# delete this text file 
-	# return success or failure 
+	#print_out(id_name,incident_type,dict_out['WEAPON'],dict_out['PERP INDIV'],dict_out['PERP ORG'],dict_out['TARGET'],dict_out['VICTIM'])
 
 def	process_file():
 	# compile the regex  patter 
