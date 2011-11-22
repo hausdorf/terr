@@ -1,14 +1,7 @@
 import re
 import sys 
-
+import utility 
 PATT = "#"
-def f_read(filename):
-
-	fd = open(filename)
-	text = fd.read()
-	fd.close()
-	return text 
-
 def get_hash_lines(text):
 	lines = text.split('\n')
 	out_list = []
@@ -31,7 +24,7 @@ if (__name__=="__main__"):
 
 	 filename = sys.argv[1]
 	 print filename
-	 text  = f_read(filename)
+	 text  = utility.f_read(filename)
 	 out_lines = get_hash_lines(text)
 	 filename_n = filename+"_patterns"
 	 f_w = open(filename_n,'w')
