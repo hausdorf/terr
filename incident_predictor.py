@@ -31,9 +31,12 @@ def get_arson_count(text):
 	m = re.findall("arson(?=\s)",text,re.IGNORECASE|re.MULTILINE) # positive lookahead 
 	if(m):
 		count = 4*len(m)
-	m = re.findall("(?<=\s)burn",text,re.IGNORECASE|re.MULTILINE)  # positive lookbehind 
+	m = re.findall("houses\s+on\s+fire",text,re.IGNORECASE|re.MULTILINE) # positive lookahead 
 	if(m):
-		count += (4)*len(m)
+		count += 4*len(m)
+	#m = re.findall("(?<=\s)burn",text,re.IGNORECASE|re.MULTILINE)  # positive lookbehind 
+	#if(m):
+	#	count += (4)*len(m)
 	if(DEBUG):
 		print (" CAME HERE ************************************ count ",count)
 	return count
@@ -101,8 +104,13 @@ def get_bomb_count(text):
 	m = re.findall("(?<=\s)explosi",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += len(m)
-
+	m = re.findall("(?<=\s)car\s+bomb",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
 	m = re.findall("(?<=\s)car\-bomb",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
+	m = re.findall("(?<=\s)truck\s+bomb",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 3*len(m)
 	m = re.findall("(?<=\s)explosive\s+device",text,re.IGNORECASE|re.MULTILINE)
@@ -117,6 +125,12 @@ def get_bomb_count(text):
 	m = re.findall("(?<=\s)blew\-up",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += (2)*len(m)
+	m = re.findall("(?<=\s)blew\s+up",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += (2)*len(m)
+	m = re.findall("(?<=\s)blown\s+up",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += (2)*len(m)
 	if(DEBUG):
 		print (" BOMB ************************************ count ",count)
 	return count
@@ -129,7 +143,9 @@ def get_kidnap_count(text):
 	m = re.findall("(?<=\s)abduct",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 3*len(m)
-
+	m = re.findall("(?<=\s)hostage",text,re.IGNORECASE|re.MULTILINE)
+	if(m):
+		count += 3*len(m)
 	m = re.findall("(?<=\s)disappear",text,re.IGNORECASE|re.MULTILINE)
 	if(m):
 		count += 3*len(m)
