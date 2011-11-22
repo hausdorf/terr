@@ -1,11 +1,16 @@
 import re
 
 DEBUG = False
-# Remove everything befor president 
+# victims white flags 
+not_victims = ["GUERRILLAS,"]
+not_perp   = ["POLICE","ARMY","GOVERNMENT"]
+# Remove everything befor president
+# for organization the jesuit community cant be a perp . perp cant be jesuit  
 # RED FLAG VICTIMS/organization perpatrators = [organization,military,infantry,]
 # PERPETRATORS ARE UNIDENTIFIED PERSON / MEN or contains this
-# BY is a NP
-remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","WERE","ALSO","VICTIM","CAR","WHILE","FORMER","SAME","NIGHT","BY","AS","QUALIFICATIONS","WHO","KILLED","ALSO","HAVE","LEARNED","WE","SAME","PLACE","IN"]
+# BY is a NP not sure abt general
+remove_list = ["COMPANION","ASSISTANT","SECRETARY","DEFENSE","MINISTER","CASE","COLD","BLOOD","AND","ANOTHER","WE","TOTALLY","BEEN","BRUTALLY","VIOLENTLY","SHOTS","DAMAGED","DAMAGE","DURING","NO","OR","FROM","RESULTED","CASUALTIES","SUBSTANTIALLY","BOMB","THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","THEIR","WERE","ALSO","VICTIM","CAR","WHILE","FORMER","SAME","NIGHT","BY","AS","QUALIFICATIONS","WHO","KILLED","ALSO","HAVE","HAD","RECEIVED","RECEIVE","LEARNED","WE","SAME","PLACE","IN","MORNING","MURDERED","MASSACRED","MASSACRE","MURDER","OUTSTANDING","GENERAL","LAST","TO","CONTINUE","HONEST"]
+victim_remove_list = ["ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN","MNR"]
 # REGEXES 
 SEARCH_NP = "\[(.*?)\]\/NP" 
 # NP cleaner 
@@ -114,7 +119,19 @@ def f_read(filename):
 	fd = open(filename)
 	text = fd.read()
 	fd.close()
-	return text 
+	return text
+
+# converts a pos tagged sentence to a untagged plain sentence 	
+def pos_to_plain(sent):	
+	out_list = [] 
+	words = sent.split()
+	for wrd in words:
+		wrd_list = wrd.split('/')
+		new_wrd = wrd_list[0]
+		if (new_wrd):
+			out_list.append(new_wrd)
+	return ' '.join(out_list)
+
 
 if __name__ =="__main__":
 	test_list = ["aa","aaaaaaa asdfs","aa sg asgasg","ia asgs aa"]
