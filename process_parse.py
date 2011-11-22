@@ -74,7 +74,51 @@ def isEmpty(line):
 	m = re.match(EMPTY_LINE,line)
 	if(m):
 		return True
-	return False	
+	return False
+
+# does the same thing as pprocess_pfile but for a line 
+def pprocess_pline(text):
+
+	lines = text.split('\n')
+	## initialize three dicts
+	pos_tags_dict = {}
+	parse_tree_dict = {}
+	parse_dependency_dict = {}
+
+	curr_loc_read = 0 
+	lines_processed = 0 
+	dependency_list = [] 
+	for line in lines:
+		line = line.strip()
+		if (not line):
+			continue
+		if(isEmpty(line)):
+			continue
+		line = clean_str(line)
+		# first part of each line is the pos tag
+		if(curr_loc_read==0):
+			#line = remove_tagged_comma(line) 
+			pos_tags_dict[lines_processed] = line
+			curr_loc_read += 1
+		# second part of each line is the parse tree	
+		elif(curr_loc_read==1):
+			parse_tree_dict[lines_processed] = line 
+			curr_loc_read += 1 
+		# third part of each line is the dependency list 	
+		elif(curr_loc_read==2):
+			m = re.match("\*\*\*",line)	
+			if(m):
+					parse_dependency_dict[lines_processed]=dependency_list # makes a copy
+					# move to a next line in text 
+					lines_processed += 1
+					# initialize vars for next line 
+					curr_loc_read = 0 
+					dependency_list = []
+			else:		
+				dependency_list.append(line)	
+			
+	return (pos_tags_dict,parse_tree_dict,parse_dependency_dict)
+
 # returns (dict,dict,dict) i.e all the different kinds of parse(i.e pos_tags,parse tree,dependency list) for all the lines in a file 
 def pprocess_pfile(filename):
 
