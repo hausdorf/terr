@@ -184,8 +184,8 @@ def main():
 #				print len(temp_patt_list2)
 #				print len(temp_patt_list3)
 				irrel_patt_list += temp_patt_list + temp_patt_list2 + temp_patt_list3 
-	print "irrel len ",irrel_patt_list
-	print "***********************" 
+	#print "irrel len ",irrel_patt_list
+	#print "***********************" 
 		
 	for root, dirs, files in os.walk(PATH):
 		for file in files:
@@ -207,14 +207,13 @@ def main():
 				v_rel_patt_list += temp_patt_v 
 				w_rel_patt_list += temp_patt_w 
 				p_rel_patt_list += temp_patt_p
-	print v_rel_patt_list
-	print "***********************" 
-	print p_rel_patt_list
-	print "***********************" 
-	print w_rel_patt_list
-		#print matching.aggregate(['seeking cow'], irrel_patt_list)
-
-		#matching.aggregate(p
+	#print v_rel_patt_list
+	#print "***********************" 
+	#print p_rel_patt_list
+	#print "***********************" 
+	#print w_rel_patt_list
+	rel_set = matching.cmp(irrel_patt_list, v_rel_patt_list)
+	print rel_set
 
 if __name__== '__main__':
 	# do something 

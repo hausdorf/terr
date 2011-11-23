@@ -1,5 +1,7 @@
+import re
 
-
+DEBUG = False
+# PERPETRATORS ARE UNIDENTIFIED PERSON / MEN or contains this 
 remove_list = ["THE","A","IT","HE","SHE","HIS","HER","HIM","THEY","THEM","TODAY","YESTERDAY","THIS","THAT","THERE","WERE","ALSO","VICTIM","CAR"]
 # REGEXES 
 SEARCH_NP = "\[(.*?)\]\/NP" 
@@ -43,5 +45,67 @@ def np_cleaner(np):
 	return clean_str
 
 
-### ANOTHER FUNCTION IS CHOOSE ONE OR REMOVE REDUNDANT i.e JESUITS / CLERGYMEN
-### ALGO IS ONE STR IS A SUBSET OF THE OTHER THEN DONT INCLUDE BOTH	
+def np_cleaner_str(np):
+
+	np = np.strip()
+	np_words = np.split()
+	if (len(np_words) == 1):
+		return np
+	new_words = []
+	for word in np_words :
+		word = word.upper()	
+		if word in remove_list:
+			continue 
+		else:
+			new_words.append(word)
+	new_np = ' '.join(new_words)
+	return new_np 
+### ANOTHER FUNCTION IS CHOOSE ONE OR REMOVE REDUNDANT SYNONYMSi.e JESUITS / CLERGYMENi
+
+
+
+
+### TAKES CARE OF NP overlapping .. selects the smallest NP . i.e if we have Bill clinton  and clinton ..this will return clinton
+
+def remove_subsets(np_l):
+
+	# clean the list of any redundant words 
+	np_list = []
+	for np in np_l:
+		np = np.upper()
+		np = np_cleaner_str(np)
+		if np:
+			np_list.append(np)
+
+	print "np_list",np_list
+	# sort list 
+	np_list.sort(key=lambda(x):len(x))
+	# create a binary list of same len as np list and set all elements to 0 , ( 0, not added to new list ,1 = added to new list ) 
+	np_list_bin = [0 for i in xrange(len(np_list))]
+	# Algorithm go from smallest to largest 
+	n = len(np_list)
+	np_list_new = [] 
+	for i in range(n):
+		if(np_list_bin[i] == 1 ):
+			continue
+		patt = np_list[i]
+		patt = patt.strip()
+		pattern = '\\b'+patt+'\\b' # add word boundary regex meta character  
+		for j in range(i+1,n):
+				if( np_list_bin[j] == 1):
+					continue
+				source_np = np_list[j] 
+				m = re.search(pattern,source_np,re.IGNORECASE)
+				if m:
+					if (DEBUG):
+						print "one is a subset of another ",pattern,source_np
+					np_list_bin[j] = 1
+		np_list_bin[i]	= 1		
+		np_list_new.append(patt)
+	return np_list_new 
+
+if __name__ =="__main__":
+	test_list = ["aa","aaaaaaa asdfs","aa sg asgasg","ia asgs aa"]
+	print "original list",test_list
+	l = remove_subsets(test_list)
+	print l

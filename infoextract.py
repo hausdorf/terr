@@ -43,8 +43,7 @@ def process_input_text(file_text,id_name):
 	if(not main):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
-	#TODO ALEX   
-		# ADD YOUR META processing algor HERE .. (meta content is in variable meta)
+
 	file_text = re.sub(NEWLINE," ",main)
 	if(DEBUG):
 		print ("processing text",main) 

@@ -1,5 +1,6 @@
+from __future__ import division
 from aslog import groups
-import collections
+import collections, math
 
 
 def fmt_prev(l):
@@ -32,6 +33,31 @@ def find_thing(prsed, patterns):
 				j = 0
 				i -= 1
 			i += 1
+
+def cmp(irr, rel):
+	irr_dict = collections.defaultdict(lambda:0)
+	for i in irr:
+			irr_dict[i.split(':')[-1]] += 1
+
+	rel_set = collections.defaultdict(lambda:[])
+	for r in rel:
+			rel_set[r.split(':')[-1]].append(r)
+
+	rel_dict = collections.defaultdict(lambda:0)
+	for r in rel:
+			rel_dict[r.split(':')[-1]] += 1
+
+	res = []
+	for patt,cnt in rel_dict.items():
+			tot = cnt + irr_dict[patt]
+			scr = (cnt/tot) * math.log(tot,2)
+			print scr
+			if scr > 0.5:
+					res.append((patt,scr,rel_set[patt]))
+
+	res.sort(key=lambda(x,y,z):y)
+
+	return res
 
 def aggregate(prsed, patts):
 	cnts = collections.defaultdict(lambda: 0)
