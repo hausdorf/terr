@@ -1,22 +1,29 @@
 from __future__ import division, with_statement
-import os, sys, collections, re
+import os, sys, collections, re, string
 
 
-ANSWR = 'answerkeys/'
+ANSWR1 = 'developset/answers/'
+ANSWR2 = 'answerkeys/'
 ALLWD = set(['INCIDENT', 'WEAPON', 'PERP INDIV', 'PERP ORG', 'TARGET', 'VICTIM'])
 
 
-def fiter():
-	for pth, dirs, files in os.walk(ANSWR):
+def fiter(p):
+	for pth, dirs, files in os.walk(p):
 		for file in files:
 			r = open(pth + '/' + file)
 			yield r
 			r.close()
 
 def liter_all_f():
-	for f in fiter():
+	for f in fiter(ANSWR1):
 		for l in f.readlines():
 			yield l
+
+	"""
+	for f in fiter(ANSWR2):
+		for l in f.readlines():
+			yield l
+	"""
 
 def answr_dict():
 	stats = collections.defaultdict(
@@ -47,12 +54,14 @@ def prior_patts(thing, stats):
 def results(thing, patts, stats, text):
 	rslts = []
 	for e in patts:
-		res = re.search(e, text)
+		res = re.search(e + ' ', text)
 		if res:
+			#print res.group(0)
 			rslts.append((e, stats[thing][e]))
 
 	rslts.sort(key=lambda(x,y):y, reverse=True)
 	if len(rslts) > 0:
+		#print rslts
 		return rslts[0][0]
 	else:
 		return '-'

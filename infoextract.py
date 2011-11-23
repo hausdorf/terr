@@ -53,9 +53,12 @@ def process_input_text(file_text,id_name):
 	weapon = get_weapon(file_text, d)
 	#perpindiv = get_perp_indiv(file_text, d)
 	perpindiv = '-'
-	perporg = get_perp_org(file_text, d)
-	target = get_target(file_text, d)
-	victim = get_victim(file_text, d)
+	#perporg = get_perp_org(file_text, d)
+	perporg = '-'
+	#target = get_target(file_text, d)
+	target = '-'
+	#victim = get_victim(file_text, d)
+	victim = '-'
 
 	incident_type = incident_predictor.get_predicted_event(main) 
 	print_out(id_name,incident_type,weapon,perpindiv,perporg,target,victim)
