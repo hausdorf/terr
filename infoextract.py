@@ -2,6 +2,7 @@ import sys
 import re
 import incident_predictor
 import preprocess
+from answer_stats import answr_dict, get_weapon
 
 DEBUG=False
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -39,8 +40,6 @@ def process_input_text(file_text,id_name):
 	if(not meta):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return 
-	print "meta info"+meta
-	print
 	if(not main):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
@@ -50,8 +49,12 @@ def process_input_text(file_text,id_name):
 	if(DEBUG):
 		print ("processing text",main) 
 		print ("")
+
+	d = answr_dict()
+	weapon = get_weapon(file_text, d)
+
 	incident_type = incident_predictor.get_predicted_event(main) 
-	print_out(id_name,incident_type,"-","-","-","-","-")
+	print_out(id_name,incident_type,weapon,"-","-","-","-")
 
 
 
