@@ -34,25 +34,48 @@ def answr_dict():
 
 	return stats
 
-def get_weapon(text, stats):
+def prior_patts(thing, stats):
 	patts = []
-	for entry in stats['WEAPON']:
+	for entry in stats[thing]:
 		if entry == '-':
 			continue
 
 		patts.append(entry)
 
+	return patts
+
+def results(thing, patts, stats, text):
 	rslts = []
 	for e in patts:
 		res = re.search(e, text)
 		if res:
-			rslts.append((e, stats['WEAPON'][e]))
+			rslts.append((e, stats[thing][e]))
 
 	rslts.sort(key=lambda(x,y):y, reverse=True)
 	if len(rslts) > 0:
 		return rslts[0][0]
 	else:
 		return '-'
+
+def get_weapon(text, stats):
+	patts = prior_patts('WEAPON', stats)
+	return results('WEAPON', patts, stats, text)
+
+def get_perp_indiv(text, stats):
+	patts = prior_patts('PERP INDIV', stats)
+	return results('PERP INDIV', patts, stats, text)
+
+def get_perp_org(text, stats):
+	patts = prior_patts('PERP ORG', stats)
+	return results('PERP ORG', patts, stats, text)
+
+def get_target(text, stats):
+	patts = prior_patts('TARGET', stats)
+	return results('TARGET', patts, stats, text)
+
+def get_victim(text, stats):
+	patts = prior_patts('VICTIM', stats)
+	return results('VICTIM', patts, stats, text)
 
 def pstats(stats):
 	lst = []

@@ -2,7 +2,7 @@ import sys
 import re
 import incident_predictor
 import preprocess
-from answer_stats import answr_dict, get_weapon
+from answer_stats import answr_dict, get_weapon, get_perp_indiv, get_perp_org, get_target, get_victim
 
 DEBUG=False
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -51,9 +51,14 @@ def process_input_text(file_text,id_name):
 
 	d = answr_dict()
 	weapon = get_weapon(file_text, d)
+	#perpindiv = get_perp_indiv(file_text, d)
+	perpindiv = '-'
+	perporg = get_perp_org(file_text, d)
+	target = get_target(file_text, d)
+	victim = get_victim(file_text, d)
 
 	incident_type = incident_predictor.get_predicted_event(main) 
-	print_out(id_name,incident_type,weapon,"-","-","-","-")
+	print_out(id_name,incident_type,weapon,perpindiv,perporg,target,victim)
 
 
 
