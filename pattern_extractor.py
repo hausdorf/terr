@@ -20,9 +20,7 @@ BACK = 0
 
 ## IMPORTANT make room for multiple spaces in ur regex  victim was killed  in text or victim was  killed 
 def is_front(patt):
-	print "in front patt",patt
 	if(patt[0] == ' '):
-		print "is front == ",patt
 		return True	
 	
 def get_np(word,parsed_sent,is_front,meta):
@@ -36,23 +34,27 @@ def get_np(word,parsed_sent,is_front,meta):
 		temp_arr = parsed_sent.split(word)
 		print temp_arr 
 		if(len(temp_arr)) > 2:
-			print "sent has more than two "+word+"parsed sent = "+parsed_sent
+			print "sent has more than two "+word+" parsed sent = "+parsed_sent
 			for i in xrange(len(temp_arr)-1):
 				first_half  = temp_arr[i]
 				# search for NP thing here
 				print "first part",first_half
 				# check if there was a half split 	
-				m_half = re.search(PATT_LHALF_NP,first_half)
+				#m_half = re.search(PATT_LHALF_NP,first_half)
+				m_half = re.findall(PATT_LHALF_NP,first_half)
 				m = re.findall(PATT_NP,first_half)
 				if m_half:
-					np = m_half.group(0)
-					np_clean  = utility.np_cleaner(np)
-					if (np_clean):
-						out_list.append(np_clean)
+					#np = m_half.group(0)
+					for np in m_half:
+						print "m_half is processing",np 
+						np_clean  = utility.np_cleaner(np)
+						if (np_clean):
+							out_list.append(np_clean)
 				if m:
 					#  we need the rightmost pattern found m[-1] not necessarily for Front patterns look at all NP ? 
 					for np in m:
 					#np = m[-1]
+						print "while m  is processing",np 
 						np_clean  = utility.np_cleaner(np)
 						if (np_clean):
 							out_list.append(np_clean)
@@ -61,17 +63,22 @@ def get_np(word,parsed_sent,is_front,meta):
 			# search for NP thing here
 			print "first half",first_half
 			# check if there was a half split 	
-			m_half = re.search(PATT_LHALF_NP,first_half)
+			#m_half = re.search(PATT_LHALF_NP,first_half)
+			m_half = re.findall(PATT_LHALF_NP,first_half)
 			m = re.findall(PATT_NP,first_half)
 			if m_half:
-				np = m_half.group(0)
-				np_clean  = utility.np_cleaner(np)
-				if(np_clean):
-					out_list.append(np_clean)
+				
+				#np = m_half.group(0)
+				for np in m_half:
+					print "m_half is processing",np 
+					np_clean  = utility.np_cleaner(np)
+					if(np_clean):
+						out_list.append(np_clean)
 			if m:
 				#  we need the rightmost pattern found m[-1] 
 				for np in m:
 				#np = m[-1]
+					print "while m  is processing",np 
 					np_clean  = utility.np_cleaner(np)
 					if (np_clean):
 						out_list.append(np_clean)
@@ -88,35 +95,43 @@ def get_np(word,parsed_sent,is_front,meta):
 				# search for NP thing here
 				print "second part",second_half
 				# search usually progresses from left to right so this should be good
-				m_half = re.search(PATT_RHALF_NP,second_half)
-				m = re.search(PATT_NP,second_half)
+				#m_half = re.search(PATT_RHALF_NP,second_half)
+				m_half = re.findall(PATT_RHALF_NP,second_half)
+				#m = re.search(PATT_NP,second_half)
+				m = re.findall(PATT_NP,second_half)
 				if m_half:
-					np = m_half.group(0)
-					np_clean  = utility.np_cleaner(np)
-					if (np_clean):
-						out_list.append(np_clean)
+					#np = m_half.group(0)
+					for np in m_half:
+						np_clean  = utility.np_cleaner(np)
+						if (np_clean):
+							out_list.append(np_clean)
 				if m:
-					np = m.group(0)
-					np_clean  = utility.np_cleaner(np)
-					if (np_clean):
-						out_list.append(np_clean)
+					#np = m.group(0)
+					for np in m:
+						np_clean  = utility.np_cleaner(np)
+						if (np_clean):
+							out_list.append(np_clean)
 		elif(len(temp_arr) == 2):	
 			second_half  = temp_arr[1]
 			# search for NP thing here
 			print "second half",second_half
 			# search usually progresses from left to right so this should be good
-			m_half = re.search(PATT_RHALF_NP,second_half)
-			m = re.search(PATT_NP,second_half)
+			#m_half = re.search(PATT_RHALF_NP,second_half)
+			m_half = re.findall(PATT_RHALF_NP,second_half)
+			#m = re.search(PATT_NP,second_half)
+			m = re.findall(PATT_NP,second_half)
 			if m_half:
-				np = m_half.group(0)
-				np_clean  = utility.np_cleaner(np)
-				if (np_clean):
-					out_list.append(np_clean)
+				#np = m_half.group(0)
+				for np in m_half:
+					np_clean  = utility.np_cleaner(np)
+					if (np_clean):
+						out_list.append(np_clean)
 			if m:
-				np = m.group(0)
-				np_clean  = utility.np_cleaner(np)
-				if (np_clean):
-					out_list.append(np_clean)
+				#np = m.group(0)
+				for np in m:
+					np_clean  = utility.np_cleaner(np)
+					if (np_clean):
+						out_list.append(np_clean)
 	
 	out_set = set(out_list)
 	# further process this list 
@@ -178,16 +193,19 @@ def get_victims(sent,patt_lines):
 					if(not patt):
 						print "patt was empty line move to next"
 						continue
-					split_patt = patt.split(r"[\w\s]*")
+					split_patt = patt.split(r"\s*[\w]*\s*")
 					split_word = split_patt[-1]
 					split_word = split_word.strip()
-					# THIS MAKES SURE THAT a FONT PATT IS NOT MATCHED AGAIN BY BACK PATT 
-					matched_patt_word.append(split_word)
+					print "we are splitting on",split_word 
+					#matched_patt_word.append(split_word)
 					m_temp  = re.search(split_word,np_chunk_sent)
 					if(not m_temp):
 						print "split word=",split_word,"not in sent"
 						continue 
 					pot_victim_list = get_np(split_word,np_chunk_sent,FRONT,'victim')
+					if(len(pot_victim_list) > 0): 
+						# THIS MAKES SURE THAT a FONT PATT IS NOT MATCHED AGAIN BY BACK PATT 
+						matched_patt_word.append(split_word)
 				else:
 					# MATCHES BACK PATTERN 
 					# use the first word in the patt to split the parsed sentence 
@@ -257,13 +275,17 @@ def get_perpi(sent,patt_lines):
 					split_patt = patt.split()
 					split_word = split_patt[0]
 					split_word = split_word.strip()
+					print "we are splitting on",split_word 
 					# THIS MAKES SURE THAT a FONT PATT IS NOT MATCHED AGAIN BY BACK PATT 
-					matched_patt_word.append(split_word)
+					#matched_patt_word.append(split_word)
 					m_temp  = re.search(split_word,np_chunk_sent)
 					if(not m_temp):
 						print "split word=",split_word,"not in sent"
 						continue 
 					pot_perpi_list = get_np(split_word,np_chunk_sent,FRONT,'perpi')
+					if(len(pot_perpi_list) > 0): 
+						# THIS MAKES SURE THAT a FONT PATT IS NOT MATCHED AGAIN BY BACK PATT 
+						matched_patt_word.append(split_word)
 				else:
 					# MATCHES BACK PATTERN 
 					# Back patterns have three words ..second last word is the main word / split word  
@@ -275,6 +297,7 @@ def get_perpi(sent,patt_lines):
 					# second last word or second word is the main word  
 					split_word = split_patt[1]
 					split_word = split_word.strip()
+					print "we are splitting on",split_word 
 					if split_word in matched_patt_word:
 						print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
 						continue
@@ -298,12 +321,8 @@ def get_targets(sent,patt_lines):
 	for patt in patt_lines:
 		if (not patt):
 			continue
-		#m2 = re.search('MURDERED',patt)
-		#if m2:
-		#	print "patt",patt
-		# collapse multiple white spaces 
 		patt = re.sub(COLL_SPACES,SPACES_REPL,patt)
-		# check if any of the victim patterns exist for this line
+
 		m = re.findall(patt,sent)
 		if m:
 			# check forward or backward 	
@@ -353,7 +372,11 @@ def and_detector(v_list):
 	for v in v_list:
 		v = v.strip()
 		v = re.sub(COLL_SPACES,SPACES_REPL,v)
+		# ADD INCLUDING 
 		m = re.search("\\bAND\\b",v)
+		m_include = re.search("\\bINCLUDING\\b",v)
+		m_accomp = re.search("\\bACCOMPANIED\\b",v)
+		m_their = re.search("\\bTHEIR\\b",v)
 		if m:
 			v_arr = v.split("AND")
 			# JUst add all the splits to new_list 
@@ -361,7 +384,27 @@ def and_detector(v_list):
 					v_part = v_part.strip()
 					if v_part:
 						v_new_l.append(v_part)
-
+		elif m_include:
+			v_arr = v.split("INCLUDING")
+			# JUst add all the splits to new_list 
+			for v_part in v_arr:
+					v_part = v_part.strip()
+					if v_part:
+						v_new_l.append(v_part)
+		elif m_accomp:
+			v_arr = v.split("ACCOMPANIED")
+			# JUst add all the splits to new_list 
+			for v_part in v_arr:
+					v_part = v_part.strip()
+					if v_part:
+						v_new_l.append(v_part)
+		elif m_their:
+			v_arr = v.split("THEIR")
+			# JUst add all the splits to new_list 
+			for v_part in v_arr:
+					v_part = v_part.strip()
+					if v_part:
+						v_new_l.append(v_part)
 		else:
 			v_new_l.append(v)
 
@@ -375,6 +418,7 @@ def parse_file(line):
 	os.system("java -mx1000m -cp .:./stanford-parser.jar ParseFast ")
 	fo = open("text_out.txt")
 	txt = fo.read()
+	fo.close()
 	return txt 
 	# delete this text file 
 	# return success or failure 
