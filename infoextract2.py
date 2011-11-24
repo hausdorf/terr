@@ -16,7 +16,7 @@ EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
 COLL_SPACES = "\s+"
 SPACES_REPL = " "
-
+SPATT = "'S"
 
 
 
@@ -31,6 +31,77 @@ output_file = input_file + ".templates"
 f_out = open(output_file,'w')
 
 
+def print_outf(id_name,incident,weapon_l,perp_indiv_l,perp_org_l,target_l,victim_l):
+
+
+	f_out.write("ID:            "+id_name+"\n")
+	f_out.write("INCIDENT:      "+incident+"\n")
+	if weapon_l:
+		count = 0 
+		for w in weapon_l:
+			if(count==0):
+				s = "WEAPON:        %s\n"%(w)
+				count = 1
+			else:
+				s = "               %s\n"%(w)
+			f_out.write(s)
+	else:		 
+		s = "WEAPON:        -\n"
+		f_out.write(s)
+
+	
+	if perp_indiv_l:
+		count = 0 
+		for pi in perp_indiv_l:
+			if(count==0):
+				s = "PERP INDIV:    %s\n"%(pi)
+				count = 1
+			else:
+				s = "               %s\n"%(pi)
+			f_out.write(s)
+	else:	 
+		s = "PERP INDIV:    -\n"
+		f_out.write(s)
+
+	if perp_org_l:
+		count =0 
+		for po in perp_org_l:
+			if(count==0):
+				s = "PERP ORG:      %s\n"%(po)
+				count = 1
+			else:
+				s = "               %s\n"%(po)
+			f_out.write(s)
+	else:
+		s = "PERP ORG:      -\n"
+		f_out.write(s)
+	if target_l:
+		count = 0 
+		for t in target_l:
+			if(count==0):
+				s = "TARGET:        %s\n"%(t)
+				count = 1
+			else:
+				s = "               %s\n"%(t)
+			f_out.write(s)	
+	else:
+		s = "TARGET:        -\n"
+		f_out.write(s)
+
+	if victim_l:
+		count =0 
+		for v in victim_l:
+			if(count==0):
+				s = "VICTIM:        %s\n"%(v)
+				count = 1
+			else:
+				s = "               %s\n"%(v)
+			f_out.write(s)
+	else:		 
+		s = "VICTIM:        -\n"
+		f_out.write(s)
+	f_out.write("\n")
+			 
 # THIS should handle multiple line for one slot as well  	 
 def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
 
@@ -95,21 +166,23 @@ def process_input_text(file_text,id_name):
 			#print "processing line",line	
 			# make sure no consecutive white spaces in ur line
 			sent  = sent.strip()
+			# TODO remove 's and `` from sentence remove `` as well ?
+			sent = re.sub(SPATT,"",sent)			
 			input_line = re.sub(COLL_SPACES,SPACES_REPL,sent)
-			print "###PROCESSING SENT ",input_line
-			#temp_victim_list = pattern_extractor.get_victims(input_line,victim_patt_lines)
-			#if temp_victim_list:
-			#	for victim in temp_victim_list:
-			#		victim  = victim.strip()
-			#		if victim:
-			#			final_victim_set.add(victim)
+			temp_victim_list = pattern_extractor.get_victims(input_line,victim_patt_lines)
+			if temp_victim_list:
+				for victim in temp_victim_list:
+					victim  = victim.strip()
+					if victim:
+						final_victim_set.add(victim)
 			# TARGET LIST
-			#temp_target_list = pattern_extractor.get_targets(input_line,target_patt_lines)
-			#if temp_target_list:
-			#	for target in temp_target_list:
-			#		target = target.strip()
-			#		if target:
-			#			final_target_set.add(target)
+			temp_target_list = pattern_extractor.get_targets(input_line,target_patt_lines)
+			if temp_target_list:
+				for target in temp_target_list:
+					target = target.strip()
+					if target:
+						final_target_set.add(target)
+			# PERPI LIST
 			temp_perpi_list = pattern_extractor.get_perpi(input_line,perp_patt_lines)
 			if temp_perpi_list:
 				for perp in temp_perpi_list:
@@ -121,37 +194,82 @@ def process_input_text(file_text,id_name):
 			# now use algorithms to clean this list and to remove redundant stuff 
 			# get target_list
 
-	# subset removal
-	#v_new_list = list(final_victim_set)
-	#v_new_list  = utility.remove_subsets(v_new_list)	
-	#print "####after subset removal"
-	#print v_new_list
-	#v_new_list = utility.remove_syn(v_new_list)
-	#print "####after duplicate removal"
-	#print v_new_list
+	#subset removal
+	v_new_list = list(final_victim_set)
+	v_new_list  = utility.remove_subsets(v_new_list)	
+	print "after subset removal"
+	print v_new_list
+	v_new_list = utility.remove_syn(v_new_list)
+	print "after duplicate removal for ",id_name
+	print v_new_list
+
+	v_new_list = utility.rmv_flagged_np(v_new_list,'victim')# e.g headquarters
+	print "after removing flag words   for ",id_name
+	print v_new_list
+
+	v_new_list = utility.first_word_flag(v_new_list,'victim')# e.g suspects 
+	print "after one removing first word flags  for ",id_name
+	print v_new_list
+
+	v_new_list = utility.first_word_rmv(v_new_list)# e.g COLONEL REPORTER
+	print "after removing first title words like COLONEL etc ",id_name
+	print v_new_list
+
+	v_new_list = utility.one_word_cleaner(v_new_list)
+	print "after one word and digit removal for ",id_name
+	print v_new_list
+	v_new_list = utility.victim_hacks(v_new_list)# e.g hacks
+	print "after adding some hacks make unique",id_name
+	print v_new_list
+	print "###########################"
+
+
+	t_new_list  = list(final_target_set)
+	t_new_list  = utility.remove_subsets(t_new_list)	
+	print "after subset removal"
+	print t_new_list
+	t_new_list = utility.remove_syn(t_new_list)
+	print "after duplicate removal"
+	print t_new_list
+
+
+	t_new_list = utility.rmv_flagged_np(t_new_list,'target')# e.g headquarters
+	print "after removing flag words   for ",id_name
+	print t_new_list
+	t_new_list = utility.first_word_flag(t_new_list,'target')# e.g suspects 
+	print "after one removing first word flags  for ",id_name
+	print t_new_list
+
+	t_new_list = utility.one_word_cleaner(t_new_list)
+	print "###Final after one word removal for ",id_name
+	print t_new_list
 	#print "###########################"
 
-	#t_new_list  = list(final_target_set)
-	#t_new_list  = utility.remove_subsets(t_new_list)	
-	#print "####after subset removal"
-	#print t_new_list
-	#t_new_list = utility.remove_syn(t_new_list)
-	#print "####after duplicate removal"
-	#print t_new_list
-	#print "###########################"
+
 
 	p_new_list  = list(final_perpi_set)
 	p_new_list  = utility.remove_subsets(p_new_list)	
-	print "####after subset removal"
+	print "after subset removal"
 	print p_new_list
 	p_new_list = utility.remove_syn(p_new_list)
-	print "####after duplicate removal"
+	print "after duplicate removal"
 	print p_new_list
-	print "###########################"
+
+	p_new_list = utility.rmv_flagged_np(p_new_list,'perp')# e.g headquarters
+	print "after removing flag words   for ",id_name
+	print p_new_list
+	p_new_list = utility.first_word_flag(p_new_list,'perp')# e.g suspects 
+	print "after one removing first word flags  for ",id_name
+	print p_new_list
+
+	p_new_list = utility.one_word_cleaner(p_new_list)
+	print " Final after one word and digit removal for ",id_name
+	print p_new_list
+	#print "###########################"
 
 	#dict_out    = matching.match(parsed_text)
 	#print ("")
-	#print_out(id_name,incident_type,dict_out['WEAPON'],dict_out['PERP INDIV'],dict_out['PERP ORG'],dict_out['TARGET'],dict_out['VICTIM'])
+	print_outf(id_name,incident_type,[],p_new_list,[],t_new_list,v_new_list)
 
 def	process_file():
 	# compile the regex  patter 
