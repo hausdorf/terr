@@ -5,6 +5,7 @@ import utility
 import collections
 import process_parse
 
+DEBUG = False
 PATT_ORIG = "<.*?>"
 PATT_REPL2 = r"(\[[^/]*?\])\/NP"
 PATT_REPL = " "
@@ -32,13 +33,14 @@ def get_np(word,parsed_sent,is_front,meta):
 		# ABC WAS ASSASINATED 
 		# splits according to first occurence of word  
 		temp_arr = parsed_sent.split(word)
-		print temp_arr 
 		if(len(temp_arr)) > 2:
-			print "sent has more than two "+word+" parsed sent = "+parsed_sent
+			if(DEBUG):
+				print "sent has more than two "+word+" parsed sent = "+parsed_sent
 			for i in xrange(len(temp_arr)-1):
 				first_half  = temp_arr[i]
 				# search for NP thing here
-				print "first part",first_half
+				if(DEBUG):
+					print "first part",first_half
 				# check if there was a half split 	
 				#m_half = re.search(PATT_LHALF_NP,first_half)
 				m_half = re.findall(PATT_LHALF_NP,first_half)
@@ -46,7 +48,6 @@ def get_np(word,parsed_sent,is_front,meta):
 				if m_half:
 					#np = m_half.group(0)
 					for np in m_half:
-						print "m_half is processing",np 
 						np_clean  = utility.np_cleaner(np)
 						if (np_clean):
 							out_list.append(np_clean)
@@ -54,14 +55,14 @@ def get_np(word,parsed_sent,is_front,meta):
 					#  we need the rightmost pattern found m[-1] not necessarily for Front patterns look at all NP ? 
 					for np in m:
 					#np = m[-1]
-						print "while m  is processing",np 
 						np_clean  = utility.np_cleaner(np)
 						if (np_clean):
 							out_list.append(np_clean)
 		else:	
 			first_half  = temp_arr[0]
 			# search for NP thing here
-			print "first half",first_half
+			if (DEBUG):
+				print "first half",first_half
 			# check if there was a half split 	
 			#m_half = re.search(PATT_LHALF_NP,first_half)
 			m_half = re.findall(PATT_LHALF_NP,first_half)
@@ -70,7 +71,6 @@ def get_np(word,parsed_sent,is_front,meta):
 				
 				#np = m_half.group(0)
 				for np in m_half:
-					print "m_half is processing",np 
 					np_clean  = utility.np_cleaner(np)
 					if(np_clean):
 						out_list.append(np_clean)
@@ -78,7 +78,6 @@ def get_np(word,parsed_sent,is_front,meta):
 				#  we need the rightmost pattern found m[-1] 
 				for np in m:
 				#np = m[-1]
-					print "while m  is processing",np 
 					np_clean  = utility.np_cleaner(np)
 					if (np_clean):
 						out_list.append(np_clean)
@@ -88,12 +87,14 @@ def get_np(word,parsed_sent,is_front,meta):
 		temp_arr = parsed_sent.split(word)
 		if(len(temp_arr)) > 2:
 			# murder of dEF and murder of eFg and murder of xyz
-			print "sent has more than two "+word+"parsed sent = "+parsed_sent
+			if(DEBUG):
+				print "sent has more than two "+word+"parsed sent = "+parsed_sent
 			for i in xrange(len(temp_arr)-1):
 				# for e.g for two instance of murder we will have temp_arr[1] and temp_arr[2]
 				second_half  = temp_arr[i+1]
 				# search for NP thing here
-				print "second part",second_half
+				if(DEBUG):
+					print "second part",second_half
 				# search usually progresses from left to right so this should be good
 				#m_half = re.search(PATT_RHALF_NP,second_half)
 				m_half = re.findall(PATT_RHALF_NP,second_half)
@@ -114,7 +115,8 @@ def get_np(word,parsed_sent,is_front,meta):
 		elif(len(temp_arr) == 2):	
 			second_half  = temp_arr[1]
 			# search for NP thing here
-			print "second half",second_half
+			if(DEBUG):
+				print "second half",second_half
 			# search usually progresses from left to right so this should be good
 			#m_half = re.search(PATT_RHALF_NP,second_half)
 			m_half = re.findall(PATT_RHALF_NP,second_half)
@@ -139,15 +141,20 @@ def get_np(word,parsed_sent,is_front,meta):
 	new_list = utility.common_cleaner(out_list)
 	if(meta =='victim'):
 		new_list = utility.victim_cleaner(new_list)
-		print "####victim removal list"
+		if(DEBUG):
+			print "####victim removal list"
 	elif(meta == 'target'):
 		new_list = utility.target_cleaner(new_list)
-		print "####target removal list"
+		if(DEBUG):
+			print "####target removal list"
 	elif(meta == 'perpi'):
 		new_list = utility.perpi_cleaner(new_list)
-		print "####perp removal list"
-			
-	print new_list
+		if(DEBUG):
+			print "####perp removal list"
+
+	if(DEBUG):		
+		print new_list
+
 	return new_list 
 
 # THIS IS CALLED FOR EACH SENTENCE i.e we check for all victim patterns in each sentence  
@@ -166,12 +173,13 @@ def get_victims(sent,patt_lines):
 		# check if any of the victim patterns exist for this line
 		m = re.findall(patt,sent)
 		if m:
-			# check forward or backward 	
-			print "pattern matched ",m,"for patt ",patt,"and sent",sent
+			# check forward or backward 
+			if(DEBUG):
+				print "pattern matched ",m,"for patt ",patt,"and sent",sent
 			# Now parse this line
 			parsed_sent = parse_file(sent)
 			if (not parsed_sent):
-				print "could not parse line"+parsed_sent
+				print "could not parse line continuing "+parsed_sent
 				continue 
 			# NOW NP CHUNK THE SENTENCE
 			# First make sense of parsed input  	
@@ -182,9 +190,7 @@ def get_victims(sent,patt_lines):
 				parsed_sent = parse_dict[i]
 				# NP chunking algo
 				np_sent= process_parse.extract_np(pos_sent,parsed_sent)
-				print "np sent",np_sent
 				np_chunk_sent = process_parse.assemble_extracts(np_sent)
-				print "np chunk ",np_chunk_sent 
 
 				# this ALGO WORKS FOR VICTIM CHECK FOR OTHERS 
 				if(is_front(patt)):
@@ -196,7 +202,6 @@ def get_victims(sent,patt_lines):
 					split_patt = patt.split(r"\s*[\w]*\s*")
 					split_word = split_patt[-1]
 					split_word = split_word.strip()
-					print "we are splitting on",split_word 
 					#matched_patt_word.append(split_word)
 					m_temp  = re.search(split_word,np_chunk_sent)
 					if(not m_temp):
@@ -217,11 +222,13 @@ def get_victims(sent,patt_lines):
 					split_word = split_patt[0]
 					split_word = split_word.strip()
 					if split_word in matched_patt_word:
-						print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
+						if(DEBUG):
+							print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
 						continue
+
 					m_temp  = re.search(split_word,np_chunk_sent)
 					if(not m_temp):
-						print "split word=",split_word,"not in sent"
+						print "split word=",split_word,"not in sent continuing"
 						continue 
 					pot_victim_list = get_np(split_word,np_chunk_sent,BACK,'victim')
 					 
@@ -246,8 +253,9 @@ def get_perpi(sent,patt_lines):
 		# check if any of the victim patterns exist for this line
 		m = re.findall(patt,sent)
 		if m:
-			# check forward or backward 	
-			print "pattern matched ",m,"for patt ",patt,"and sent",sent
+			# check forward or backward 
+			if(DEBUG):
+				print "pattern matched ",m,"for patt ",patt,"and sent",sent
 			# Now parse this line
 			parsed_sent = parse_file(sent)
 			if (not parsed_sent):
@@ -262,9 +270,7 @@ def get_perpi(sent,patt_lines):
 				parsed_sent = parse_dict[i]
 				# NP chunking algo
 				np_sent= process_parse.extract_np(pos_sent,parsed_sent)
-				print "np sent",np_sent
 				np_chunk_sent = process_parse.assemble_extracts(np_sent)
-				print "np chunk ",np_chunk_sent 
 
 				if(is_front(patt)):
 					#perpi just have one word ( as of now) so just split by word
@@ -275,7 +281,6 @@ def get_perpi(sent,patt_lines):
 					split_patt = patt.split()
 					split_word = split_patt[0]
 					split_word = split_word.strip()
-					print "we are splitting on",split_word 
 					# THIS MAKES SURE THAT a FONT PATT IS NOT MATCHED AGAIN BY BACK PATT 
 					#matched_patt_word.append(split_word)
 					m_temp  = re.search(split_word,np_chunk_sent)
@@ -297,7 +302,6 @@ def get_perpi(sent,patt_lines):
 					# second last word or second word is the main word  
 					split_word = split_patt[1]
 					split_word = split_word.strip()
-					print "we are splitting on",split_word 
 					if split_word in matched_patt_word:
 						print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
 						continue
@@ -325,8 +329,9 @@ def get_targets(sent,patt_lines):
 
 		m = re.findall(patt,sent)
 		if m:
-			# check forward or backward 	
-			print "pattern matched ",m,"for patt ",patt,"and sent",sent
+			# check forward or backward 
+			if(DEBUG):
+				print "pattern matched ",m,"for patt ",patt,"and sent",sent
 			# Now parse this line
 			parsed_sent = parse_file(sent)
 			if (not parsed_sent):
@@ -341,9 +346,7 @@ def get_targets(sent,patt_lines):
 				parsed_sent = parse_dict[i]
 				# NP chunking algo
 				np_sent= process_parse.extract_np(pos_sent,parsed_sent)
-				print "np sent",np_sent
 				np_chunk_sent = process_parse.assemble_extracts(np_sent)
-				print "np chunk ",np_chunk_sent 
 				# MATCHES BACK PATTERN 
 				# use the first word in the patt to split the parsed sentence 
 				patt = patt.strip()
@@ -354,7 +357,8 @@ def get_targets(sent,patt_lines):
 				split_word = split_patt[0]
 				split_word = split_word.strip()
 				if split_word in matched_patt_word:
-					print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
+					if(DEBUG):
+						print "###not matching back pattern since back pattern with same key word was matched ,back key word =",split_word
 					continue
 				m_temp  = re.search(split_word,np_chunk_sent)
 				if(not m_temp):
