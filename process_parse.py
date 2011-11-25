@@ -1,6 +1,7 @@
 import os
 import re
 import gen_patterns
+import utility
 import matching
 
 #DEBUG = True
@@ -19,7 +20,6 @@ NP_CHUNK_2="\NP\-TMP\s+(\(.*?\)+?)\)"
 NP_CHUNK_REPL=r"[ \1 ]/NP"
 #NP_CHUNK_2_REPL=r"(\(NP\-TMP\s+\(.*?\)+?\))"
 
-EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 TAGGED_COMMA = "\s,\/,(?=\s)"  # selects commas in the pos tagged o/p of parser ..should we remove '(single quotes) as well ? 
 COMMA  = ","
 NOUN_DEP = "nn"
@@ -69,13 +69,6 @@ def clean_str(line):
 def remove_tagged_comma(line):
 	line = re.sub(TAGGED_COMMA,"",line)
 	return line 
-# checks if a line is empty i.e \s*\n
-def isEmpty(line):	
-	m = re.match(EMPTY_LINE,line)
-	if(m):
-		return True
-	return False
-
 # does the same thing as pprocess_pfile but for a line 
 def pprocess_pline(text):
 
@@ -92,7 +85,7 @@ def pprocess_pline(text):
 		line = line.strip()
 		if (not line):
 			continue
-		if(isEmpty(line)):
+		if(utility.isEmpty(line)):
 			continue
 		line = clean_str(line)
 		# first part of each line is the pos tag
@@ -133,7 +126,7 @@ def pprocess_pfile(filename):
 	lines_processed = 0 
 	dependency_list = [] 
 	for line in fd:
-		if(isEmpty(line)):
+		if(utility.isEmpty(line)):
 			continue
 		line = clean_str(line)
 		# first part of each line is the pos tag
