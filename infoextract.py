@@ -9,6 +9,8 @@ PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
 EMPTY_LINE  = "\s*\n\s*$" # checks if a line is empty
 NEWLINE = "\n(?=.)" # selects a new line if it occurs before some char
 
+KEY = None
+
 if(len(sys.argv) == 1):
 	print ("please enter an input file ")
 	sys.exit()
@@ -33,8 +35,26 @@ def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
 	f_out.write("VICTIM:        "+victim+"\n")
 	f_out.write("\n")
 
+
+def make_key():
+	global KEY
+	f = open('developset/test_set/answerkeys/AGGREGATE')
+
+	key = {}
+	lastid = ''
+	for line in f.readlines():
+		spl = line.split(':')
+		if spl[0] == 'ID':
+			lastid = spl[1].strip()
+
+		if spl[0] == 'WEAPON':
+			key[lastid] = spl[1].strip()
+
+	KEY = key
+
 # the main function that processes each MUC text and produces the answer key 
 def process_input_text(file_text,id_name):
+	global KEY
 
 	(meta,main) = preprocess.split_text(file_text)
 	if(not meta):
@@ -50,7 +70,13 @@ def process_input_text(file_text,id_name):
 		print ("")
 
 	d = answr_dict()
+
+	if not KEY:
+		make_key()
+
 	weapon = get_weapon(file_text, d)
+	print 'C', KEY[id_name], '\n', 'D', weapon
+	print
 	#perpindiv = get_perp_indiv(file_text, d)
 	perpindiv = '-'
 	#perporg = get_perp_org(file_text, d)

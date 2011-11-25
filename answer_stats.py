@@ -6,7 +6,6 @@ ANSWR1 = 'developset/answers/'
 ANSWR2 = 'answerkeys/'
 ALLWD = set(['INCIDENT', 'WEAPON', 'PERP INDIV', 'PERP ORG', 'TARGET', 'VICTIM'])
 
-
 def fiter(p):
 	for pth, dirs, files in os.walk(p):
 		for file in files:
@@ -54,10 +53,10 @@ def prior_patts(thing, stats):
 def results(thing, patts, stats, text):
 	rslts = []
 	for e in patts:
-		res = re.search(e + ' ', text)
+		res = re.search('([a-zA-Z]+-)?' + e + '(S|ING)* ', text)
 		if res:
 			#print res.group(0)
-			rslts.append((e, stats[thing][e]))
+			rslts.append((res.group(0).strip(), stats[thing][e]))
 
 	rslts.sort(key=lambda(x,y):y, reverse=True)
 	if len(rslts) > 0:
