@@ -6,6 +6,7 @@ import utility
 import pattern_extractor
 import matching
 from meta import proc_meta
+from answer_stats import answr_dict, get_weapon, get_perp_indiv, get_perp_org, get_target, get_victim
 
 #DEBUG=True
 DEBUG=False
@@ -102,18 +103,6 @@ def print_outf(id_name,incident,weapon_l,perp_indiv_l,perp_org_l,target_l,victim
 		f_out.write(s)
 	f_out.write("\n")
 			 
-# THIS should handle multiple line for one slot as well  	 
-def print_out(id_name,incident,weapon,perp_indiv,perp_org,target,victim):
-
-	# now write output to this file  
-	f_out.write("ID:            "+id_name+"\n")
-	f_out.write("INCIDENT:      "+incident+"\n")
-	f_out.write("WEAPON:        "+weapon+"\n")
-	f_out.write("PERP INDIV:    "+perp_indiv+"\n")
-	f_out.write("PERP ORG:      "+perp_org+"\n")
-	f_out.write("TARGET:        "+target+"\n")
-	f_out.write("VICTIM:        "+victim+"\n")
-	f_out.write("\n")
 
 # the main function that processes each MUC text and produces the answer key 
 def process_input_text(file_text,id_name):
@@ -144,6 +133,11 @@ def process_input_text(file_text,id_name):
 	incident_type = incident_predictor.get_predicted_event(main) 
 	# TODO NER CALL A FUNCTION THAT returns NER DICT
 
+	d = answr_dict()
+
+	#weapon = get_weapon(file_text, d)
+	perp_org = get_perp_org(file_text,d)
+	perp_org_l = [perp_org]
 	# open file containing victim patterns
 	text = utility.f_read('victim_out_patterns_regex2')
   	victim_patt_lines = text.split('\n')
@@ -196,80 +190,102 @@ def process_input_text(file_text,id_name):
 
 	#subset removal
 	v_new_list = list(final_victim_set)
-	v_new_list  = utility.remove_subsets(v_new_list)	
-	print "after subset removal"
-	print v_new_list
+	v_new_list  = utility.remove_subsets(v_new_list)
+	if (DEBUG):
+		print "after subset removal"
+		print v_new_list
 	v_new_list = utility.remove_syn(v_new_list)
-	print "after duplicate removal for ",id_name
-	print v_new_list
+	if (DEBUG):
+		print "after duplicate removal for ",id_name
+		print v_new_list
 
 	v_new_list = utility.rmv_flagged_np(v_new_list,'victim')# e.g headquarters
-	print "after removing flag words   for ",id_name
-	print v_new_list
 
-	v_new_list = utility.first_word_flag(v_new_list,'victim')# e.g suspects 
-	print "after one removing first word flags  for ",id_name
-	print v_new_list
+	if (DEBUG):
+		print "after removing flag words   for ",id_name
+		print v_new_list
+
+	v_new_list = utility.first_word_flag(v_new_list,'victim')# e.g suspects
+
+	if (DEBUG):
+		print "after one removing first word flags  for ",id_name
+		print v_new_list
 
 	v_new_list = utility.first_word_rmv(v_new_list)# e.g COLONEL REPORTER
-	print "after removing first title words like COLONEL etc ",id_name
-	print v_new_list
+	
+	if (DEBUG):
+		print "after removing first title words like COLONEL etc ",id_name
+		print v_new_list
 
 	v_new_list = utility.one_word_cleaner(v_new_list)
-	print "after one word and digit removal for ",id_name
-	print v_new_list
+
+	if (DEBUG):
+		print "after one word and digit removal for ",id_name
+		print v_new_list
 	v_new_list = utility.victim_hacks(v_new_list)# e.g hacks
-	print "after adding some hacks make unique",id_name
-	print v_new_list
-	print "###########################"
+	
+	if (DEBUG):
+		print "after adding some hacks make unique",id_name
+		print v_new_list
+		print "###########################"
 
 
 	t_new_list  = list(final_target_set)
 	t_new_list  = utility.remove_subsets(t_new_list)	
-	print "after subset removal"
-	print t_new_list
+	if (DEBUG):
+		print "after subset removal"
+		print t_new_list
 	t_new_list = utility.remove_syn(t_new_list)
-	print "after duplicate removal"
-	print t_new_list
-
+	if (DEBUG):
+		print "after duplicate removal"
+		print t_new_list
 
 	t_new_list = utility.rmv_flagged_np(t_new_list,'target')# e.g headquarters
-	print "after removing flag words   for ",id_name
-	print t_new_list
+	if (DEBUG):
+		print "after removing flag words   for ",id_name
+		print t_new_list
 	t_new_list = utility.first_word_flag(t_new_list,'target')# e.g suspects 
-	print "after one removing first word flags  for ",id_name
-	print t_new_list
+
+	if (DEBUG):
+		print "after one removing first word flags  for ",id_name
+		print t_new_list
 
 	t_new_list = utility.one_word_cleaner(t_new_list)
-	print "###Final after one word removal for ",id_name
-	print t_new_list
+	if (DEBUG):
+		print "###Final after one word removal for ",id_name
+		print t_new_list
 	#print "###########################"
 
 
 
 	p_new_list  = list(final_perpi_set)
 	p_new_list  = utility.remove_subsets(p_new_list)	
-	print "after subset removal"
-	print p_new_list
+	if (DEBUG):
+		print "after subset removal"
+		print p_new_list
 	p_new_list = utility.remove_syn(p_new_list)
-	print "after duplicate removal"
-	print p_new_list
+	if (DEBUG):
+		print "after duplicate removal"
+		print p_new_list
 
 	p_new_list = utility.rmv_flagged_np(p_new_list,'perp')# e.g headquarters
-	print "after removing flag words   for ",id_name
-	print p_new_list
+	if (DEBUG):
+		print "after removing flag words   for ",id_name
+		print p_new_list
 	p_new_list = utility.first_word_flag(p_new_list,'perp')# e.g suspects 
-	print "after one removing first word flags  for ",id_name
-	print p_new_list
+	if (DEBUG):
+		print "after one removing first word flags  for ",id_name
+		print p_new_list
 
 	p_new_list = utility.one_word_cleaner(p_new_list)
-	print " Final after one word and digit removal for ",id_name
-	print p_new_list
+	if (DEBUG):
+		print " Final after one word and digit removal for ",id_name
+		print p_new_list
 	#print "###########################"
 
 	#dict_out    = matching.match(parsed_text)
 	#print ("")
-	print_outf(id_name,incident_type,[],p_new_list,[],t_new_list,v_new_list)
+	print_outf(id_name,incident_type,[],p_new_list,perp_org_l,t_new_list,v_new_list)
 
 def	process_file():
 	# compile the regex  patter 
