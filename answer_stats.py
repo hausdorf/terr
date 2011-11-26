@@ -53,7 +53,7 @@ def prior_patts(thing, stats):
 def results(thing, patts, stats, text):
 	rslts = []
 	for e in patts:
-		res = re.search('([a-zA-Z]+-)?' + e + '(S|ING)* ', text)
+		res = re.search('([a-zA-Z]+-)?' + e + '(S)? ', text)
 		if res:
 			#print res.group(0)
 			rslts.append((res.group(0).strip(), stats[thing][e]))

@@ -75,6 +75,7 @@ def process_input_text(file_text,id_name):
 		make_key()
 
 	weapon = get_weapon(file_text, d)
+	print id_name
 	print 'C', KEY[id_name], '\n', 'D', weapon
 	print
 	#perpindiv = get_perp_indiv(file_text, d)
