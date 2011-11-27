@@ -3,6 +3,7 @@ import re
 import incident_predictor
 import preprocess
 from answer_stats import answr_dict, get_weapon, get_perp_indiv, get_perp_org, get_target, get_victim
+from nltk import sent_tokenize, word_tokenize, pos_tag, RegexpParser
 
 DEBUG=False
 PATTERN = "((DEV|TST1|TST2)\-MUC\d\-\d{4})"
@@ -74,6 +75,13 @@ def process_input_text(file_text,id_name):
 	if not KEY:
 		make_key()
 
+	grammar = r"""
+	NP: {<DT|PP\$>?<JJ>*<NN>}
+	    {<NNP>+}
+	"""
+	sents = map(pos_tag, map(word_tokenize, [s for s in sent_tokenize(file_text.lower())]))
+	cp = RegexpParser(grammar)
+	print cp.parse(sents[0])
 	weapon = get_weapon(file_text, d)
 	print id_name
 	print 'C', KEY[id_name], '\n', 'D', weapon
