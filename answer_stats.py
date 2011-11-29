@@ -4,6 +4,9 @@ from ctx_hist import CTX_HIST
 from nltk import sent_tokenize, word_tokenize, pos_tag, RegexpParser, ne_chunk
 
 
+TST = {'BOMB SET IN AN ICE CREAM CART': 1, 'POWERFUL BOMB': 2, 'BOMB': 29, 'ROCKET': 2, 'TNT': 1, 'MACHINEGUNS IN TRIPODS': 1, 'THE BOMB': 1, 'CARBOMB': 1, 'TRUCK': 1, 'DYNAMITE CHARGE': 3, 'TERRORIST BOMBS': 1, 'EXPLOSIVES': 5, 'CAR BOMB': 5, 'SEVERAL DYNAMITE ATTACKS': 1, 'A BOMB': 2, '9-MM WEAPONS': 1, '-': 318, 'HELICOPTER GUNSHIP': 1, 'INCENDIARY BOMB': 1, 'AK-47S': 1, 'VEHICLE LOADED WITH EXPLOSIVES': 1, 'HELICOPTER GUNSHIPS': 1, 'PACKAGES OF DYNAMITE': 1, 'SUBMACHINEGUN': 1, 'EXPLOSIVE DEVICE': 2, 'MACHINEGUN': 2, 'ROCKETS': 3, 'EIGHT BOMBS': 1, 'MINE': 1, 'EXPLOSIVE CHARGES': 1, 'BOMB BLAST': 1, 'GRENADES': 2, 'BOMBS': 12, 'DYNAMITE STICKS': 2, 'GRENADE': 2, 'HEAVY CALIBER WEAPONS': 1, 'BULLET': 1, '.22 CALIBER GUN': 1, 'MORTAR': 2, 'FOUR BOMBS': 1, 'MACHINE-GUN': 1, 'EXPLOSIVE DEVICES': 5, 'BULLETS': 1, 'CHARGE OF DYNAMITE': 1, 'AT LEAST SIX BOMBS': 1, 'DYNAMITE': 10, 'MACHINEGUNS': 2, 'DYNAMITE ATTACKS': 1}
+
+
 ANSWR1 = 'developset/answers/'
 ANSWR2 = 'answerkeys/'
 ALLWD = set(['INCIDENT', 'WEAPON', 'PERP INDIV', 'PERP ORG', 'TARGET', 'VICTIM'])
@@ -22,16 +25,41 @@ def liter(p):
 		for l in f.readlines():
 			yield l
 
+def liter_(i):
+	if i == 1 or i == 3:
+		for f in fiter(ANSWR1):
+			for l in f.readlines():
+				yield l
+
+	if i == 2 or i == 3:
+		for f in fiter(ANSWR2):
+			for l in f.readlines():
+				yield l
+
 def liter_all_f():
 	for f in fiter(ANSWR1):
 		for l in f.readlines():
 			yield l
 
-	"""
 	for f in fiter(ANSWR2):
 		for l in f.readlines():
 			yield l
-	"""
+
+def answr_dict_(i):
+	stats = collections.defaultdict(
+			lambda: collections.defaultdict(lambda: 0))
+
+	for l in liter_(i):
+		spl = l.strip().split(':')
+		if len(spl) < 2 or spl[0] not in ALLWD:
+			continue
+
+		#stats[spl[0]][spl[1].strip()] += 1
+		for s in spl[1].split('/'):
+			s = s.strip()
+			stats[spl[0]][s] += 1
+
+	return stats
 
 def answr_dict():
 	stats = collections.defaultdict(
@@ -91,10 +119,17 @@ def results(thing, patts, stats, text):
 				scr = score_w_hist(pos, CTX_HIST)
 			#sents = map(pos_tag, map(word_tokenize,
 			#	[s for s in sent_tokenize(text.lower())]))
+				if thing == 'WEAPON':
+					rslts.append((res.group(0).strip(), TST.get(e,0)))
+					continue
+
 				if scr > 0:
 					print scr, e
 					rslts.append((res.group(0).strip(), stats[thing][e]))
 					rslt[res.group(0).strip()] += scr
+
+	print rslts
+
 
 	rslts = filter(lambda(x,y): y > 1, rslts)
 	rslts.sort(key=lambda(x,y):y, reverse=True)
@@ -102,9 +137,9 @@ def results(thing, patts, stats, text):
 	rslt = filter(lambda(x,y): y > 1, [(k,v) for k,v in rslt.items()])
 	rslt.sort(key=lambda(x,y):y, reverse=True)
 
-	if len(rslts) > 0 and len(rslt) > 0:
-		return rslt
-		#return rslts
+	if len(rslts) > 0:
+		#return rslt
+		return rslts
 	else:
 		return '-'
 
