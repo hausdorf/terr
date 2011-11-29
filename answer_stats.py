@@ -68,6 +68,7 @@ def score_w_hist(sent, d):
 
 def results(thing, patts, stats, text):
 	rslts = []
+	rslt = collections.defaultdict(lambda:0)
 	"""
 	for e in patts:
 		res = re.search(' ([a-zA-Z]+-)?' + e + '(S)? ', text)
@@ -93,12 +94,17 @@ def results(thing, patts, stats, text):
 				if scr > 0:
 					print scr, e
 					rslts.append((res.group(0).strip(), stats[thing][e]))
+					rslt[res.group(0).strip()] += scr
 
 	rslts = filter(lambda(x,y): y > 1, rslts)
 	rslts.sort(key=lambda(x,y):y, reverse=True)
 
-	if len(rslts) > 0:
-		return rslts
+	rslt = filter(lambda(x,y): y > 1, [(k,v) for k,v in rslt.items()])
+	rslt.sort(key=lambda(x,y):y, reverse=True)
+
+	if len(rslts) > 0 and len(rslt) > 0:
+		return rslt
+		#return rslts
 	else:
 		return '-'
 
