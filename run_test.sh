@@ -1,1 +1,1 @@
-python26 infoextract.py developset/test_set/texts/AGGREGATE
+python26 infoextract2.py test_aggregate
