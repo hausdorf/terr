@@ -135,9 +135,11 @@ def process_input_text(file_text,id_name):
 
 	d = answr_dict()
 
-	#weapon = get_weapon(file_text, d)
+	weapon = get_weapon(file_text, d)
+	weapon_l = [weapon[0][0]]
 	perp_org = get_perp_org(file_text,d)
-	perp_org_l = [perp_org]
+	perp_org_l = [perp_org[0][0]]
+	print perp_org_l
 	# open file containing victim patterns
 	text = utility.f_read('victim_out_patterns_regex2')
   	victim_patt_lines = text.split('\n')
@@ -285,7 +287,7 @@ def process_input_text(file_text,id_name):
 
 	#dict_out    = matching.match(parsed_text)
 	#print ("")
-	print_outf(id_name,incident_type,[],p_new_list,perp_org_l,t_new_list,v_new_list)
+	print_outf(id_name,incident_type,weapon_l,p_new_list,perp_org_l,t_new_list,v_new_list)
 
 def	process_file():
 	# compile the regex  patter 
