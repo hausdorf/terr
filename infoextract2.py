@@ -139,7 +139,6 @@ def process_input_text(file_text,id_name):
 	weapon_l = [weapon[0][0]]
 	perp_org = get_perp_org(file_text,d)
 	perp_org_l = [perp_org[0][0]]
-	print perp_org_l
 	# open file containing victim patterns
 	text = utility.f_read('victim_out_patterns_regex2')
   	victim_patt_lines = text.split('\n')
