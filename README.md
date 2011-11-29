@@ -1,34 +1,31 @@
-### Preprocessing Data
+# CS 5340 NLP Final project
 
-In order to do these experiments, you must preprocess the data. To do this:
+*Authors:* Vishay Vanjani, Alex Clemmer
 
-1. Unzip Ellens data. This should produce a directory developset/.
-2. Put this directory in the same directory as `preprocess.py`. Create a directory: `developset/pptexts/`. This is where `preprocess.py` will drop the "processed" data.
-3. Run `python preprocess.py`.
+## Running the Project
 
-## TODO LIST
+This should happen in 3 steps. We've tested it on CADE machine 1-11, using Python 2.6.
 
-1. ~~**Input Formatting : complete**~~ add support for [excerpts] and other [Text] tag substitutes
-[Text] tag 
-make use of [communique] contains : helps in retrieving organization names 
-make use of [source] : organization name ? 
+1. GET DATA. The first thing you need to do is to move NLTK's data into your ~/nltk_data/ folder. This is *VERY IMPORTANT*, because it must be in that EXACT DIRECTORY for the chunker and pos taggers to run. Unfortunately, the CADE machines do not come with it by default, so we've set up a script for you:
 
+    ./nltk_data.sh
 
-2. **sentence fragmentation + parsing : Owner <vishay.vanjani@gmail.com>** use nltk toolkit to create chunks    
+Once you execute this script, a GUI will pop up. It will give you options about which package to download. Choose the option that downloads all the stuff mentioned in the book. THIS WILL AUTOMATICALLY DUMP THIS DATA INTO YOUR ~/nltk_data/ DIRECTORY.
 
+2. RUN OUR SYSTEM. This take A LONG TIME --- maybe 30 minutes. We've set up a script for you that does this automatically for the test data:
 
-3. **function that finds the incident ( arson , bomb , murder etc ) : + attach it to wordnet ??** --i dont think auto slug is going to perform well here . have to just search for incident words ; 
+    ./run_test.sh
 
-4. **write more/ Modify  heuristics**
+This script runs PYTHON 2.6. THIS IS REQUIRED. NO OTHER PYTHON VERSION WILL DO. The data is run over the file `test_aggregate`. If you would like to run it over your own data, run:
 
-5. **Algorithm for finding syntactic roles given sentence pos tags   // priority : before Nov 8** can we use semantic roles instead ? check 
+    python26 infoextract2.py [filename]
 
-6. **Functions that prints the relevant score and ranking score ( Autoslug TS)**
+In general, this will produce a trace file called `$FILENAME.templates`, which contains our outputted answers. This can be used directly with the grading script.
 
-7. **AutoSlug Type Annotation  // Priority : After Nov 8** Annotate the input MUC texts with the Answer keys 
+3. GRADE OUR SYSTEM. If you've run our system over the default data, get the results by running:
 
-8. **semantic constraints checker : wordnet or basilisk like tool** check for semantic constraint like human weapon 
+    ./eval_test.sh
 
-9. **using stanford NER ??** think of adding it some how but if we have np already then we dont need anything rite ... 
+This just runs the class perl script over the default output files made by our system. However, if you'd like to run it over the output of some data other than the given data, simply execute the perl script as usual.
 
 
