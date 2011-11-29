@@ -1,10 +1,14 @@
 from __future__ import division, with_statement
 import os, sys, collections, re, string
+from ctx_hist import CTX_HIST
+from nltk import sent_tokenize, word_tokenize, pos_tag, RegexpParser, ne_chunk
 
 
 ANSWR1 = 'developset/answers/'
 ANSWR2 = 'answerkeys/'
 ALLWD = set(['INCIDENT', 'WEAPON', 'PERP INDIV', 'PERP ORG', 'TARGET', 'VICTIM'])
+V_TAGS = set(['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
+
 
 def fiter(p):
 	for pth, dirs, files in os.walk(p):
@@ -12,6 +16,11 @@ def fiter(p):
 			r = open(pth + '/' + file)
 			yield r
 			r.close()
+
+def liter(p):
+	for f in fiter(p):
+		for l in f.readlines():
+			yield l
 
 def liter_all_f():
 	for f in fiter(ANSWR1):
@@ -50,18 +59,46 @@ def prior_patts(thing, stats):
 
 	return patts
 
+def score_w_hist(sent, d):
+	lst = []
+	for w in sent:
+		if w[1] in V_TAGS:
+			lst.append(w[0])
+	return len(lst)
+
 def results(thing, patts, stats, text):
 	rslts = []
+	"""
 	for e in patts:
-		res = re.search('([a-zA-Z]+-)?' + e + '(S)? ', text)
+		res = re.search(' ([a-zA-Z]+-)?' + e + '(S)? ', text)
 		if res:
 			#print res.group(0)
 			rslts.append((res.group(0).strip(), stats[thing][e]))
 
+	rslts = filter(lambda(x,y): y > 1, rslts)
 	rslts.sort(key=lambda(x,y):y, reverse=True)
+	"""
+
+	for e in patts:
+		res = re.search(' ([a-zA-Z]+-)?' + e + '(S)? ', text)
+		if res:
+			sents = [s for s in sent_tokenize(text)]
+			for s in sents:
+				if not re.search(' ([a-zA-Z]+-)?' + e + '(S)? ', s):
+					continue
+				pos = pos_tag(word_tokenize(s.lower()))
+				scr = score_w_hist(pos, CTX_HIST)
+			#sents = map(pos_tag, map(word_tokenize,
+			#	[s for s in sent_tokenize(text.lower())]))
+				if scr > 0:
+					print scr, e
+					rslts.append((res.group(0).strip(), stats[thing][e]))
+
+	rslts = filter(lambda(x,y): y > 1, rslts)
+	rslts.sort(key=lambda(x,y):y, reverse=True)
+
 	if len(rslts) > 0:
-		#print rslts
-		return rslts[0][0]
+		return rslts
 	else:
 		return '-'
 
