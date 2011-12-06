@@ -6,6 +6,7 @@ import utility
 import pattern_extractor
 import matching
 from meta import proc_meta
+import expt
 from answer_stats import answr_dict, get_weapon, get_perp_indiv, get_perp_org, get_target, get_victim
 
 #DEBUG=True
@@ -115,7 +116,7 @@ def process_input_text(file_text,id_name):
 		print "ERROR IN SPLITTING MAIN AND META"
 		return
 	#print proc_meta(meta)
-		
+
 	temp_victim_list = []
 	final_victim_set =set([])
 	temp_target_list = []
@@ -129,8 +130,11 @@ def process_input_text(file_text,id_name):
 		print ("processing text",main) 
 		print ("")
 	
+	### BEGIN EXPERIMENTAL ###
+
 	# pass file text instead of main in infoextract2.py 	
 	incident_type = incident_predictor.get_predicted_event(main) 
+	#incident_type = '-'
 	# TODO NER CALL A FUNCTION THAT returns NER DICT
 
 	d = answr_dict()
@@ -139,6 +143,13 @@ def process_input_text(file_text,id_name):
 	weapon_l = [weapon[0][0]]
 	perp_org = get_perp_org(file_text,d)
 	perp_org_l = [perp_org[0][0]]
+	p_new_list = ['-']
+	t_new_list = ['-']
+	v_new_list = ['-']
+
+	### END EXPERIMENTAL ###
+
+	"""
 	# open file containing victim patterns
 	text = utility.f_read('victim_out_patterns_regex2')
   	victim_patt_lines = text.split('\n')
@@ -255,10 +266,12 @@ def process_input_text(file_text,id_name):
 	if (DEBUG):
 		print "###Final after one word removal for ",id_name
 		print t_new_list
+	t_new_list = ['-']
 	#print "###########################"
 
 
 
+	p_new_list = ['-']
 	p_new_list  = list(final_perpi_set)
 	p_new_list  = utility.remove_subsets(p_new_list)	
 	if (DEBUG):
@@ -282,6 +295,7 @@ def process_input_text(file_text,id_name):
 	if (DEBUG):
 		print " Final after one word and digit removal for ",id_name
 		print p_new_list
+	"""
 	#print "###########################"
 
 	#dict_out    = matching.match(parsed_text)
