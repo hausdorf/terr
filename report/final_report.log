@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 14:50
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 15:35
 entering extended mode
  %&-line parsing enabled.
 **final_report.tex
@@ -527,7 +527,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 69--70
 
  []
 
-<workflow.png, id=69, 525.965pt x 140.525pt>
+<workflow.png, id=77, 525.965pt x 140.525pt>
 File: workflow.png Graphic file (type png)
  <use workflow.png>
 LaTeX Font Info:    Try loading font information for OMS+pcr on input line 89.
@@ -541,7 +541,7 @@ Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
 
-<patt.png, id=71, 489.83pt x 166.6225pt>
+<patt.png, id=79, 489.83pt x 166.6225pt>
 File: patt.png Graphic file (type png)
  <use patt.png> [2 <./workflow.png>]
 Missing character: There is no ‚ in font ptmr7t!
@@ -561,21 +561,24 @@ Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
 
 [3 <./patt.png>]
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 144.
+ [4]
 Missing character: There is no ‚ in font cmssbx10!
 Missing character: There is no Ä in font cmssbx10!
 Missing character: There is no ú in font cmssbx10!
 Missing character: There is no ‚ in font cmssbx10!
 Missing character: There is no Ä in font cmssbx10!
 Missing character: There is no ù in font cmssbx10!
- [4] [5] (./final_report.aux) ) 
+ [5] [6] (./final_report.aux) ) 
 Here is how much of TeX's memory you used:
- 6329 strings out of 493848
- 89591 string characters out of 3149207
+ 6350 strings out of 493848
+ 89772 string characters out of 3149207
  166120 words of memory out of 3000000
- 9414 multiletter control sequences out of 15000+200000
- 36064 words of font info for 94 fonts, out of 3000000 for 9000
+ 9418 multiletter control sequences out of 15000+200000
+ 36579 words of font info for 96 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,7n,38p,870b,384s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,7n,38p,970b,384s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2009/texmf-dist/fonts/enc/dv
 ips/base/8r.enc}</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmr10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/c
@@ -586,9 +589,9 @@ m/cmsy10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/courier/ucrb8a
 sr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/t
 exlive/2009/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/200
 9/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_report.pdf (5 pages, 158210 bytes).
+Output written on final_report.pdf (6 pages, 166482 bytes).
 PDF statistics:
- 152 PDF objects out of 1000 (max. 8388607)
- 40 named destinations out of 1000 (max. 500000)
- 115 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 180 PDF objects out of 1000 (max. 8388607)
+ 56 named destinations out of 1000 (max. 500000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
 

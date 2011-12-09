@@ -118,7 +118,62 @@ This module’s goal was to filter through the list of NPs returned by previous 
 
 \end{enumerate}
 
-\subsection{Predicting the \texttt{Weapon} slot}
+\subsection{Predicting the \texttt{Weapon} Slot}
+
+AutoSlog has the downside of being a very complicated slot with a number of different moving parts, and a significant pipeline, which makes it complicated to describe. In contrast, the \texttt{Weapon} slot is fairly simple: this is a weighted dictionary lookup. We find the weights using a cross-validated weight boosting scheme.
+
+This is a viable approach because a very high percentage of the slots will accept an answer that is the \texttt{dev} set. Very close to all of the unique answers in the \texttt{test1} set are actually answers with more than one option, and almost always with at least one term we saw at least once in the \texttt{dev} set.
+
+The question is how we know what the optimal weights are. The approach that made it into the final project works (roughly) as follows:
+
+\begin{enumerate}
+\item Begin with a hash table containing $key : value$ pairs, where $key$ is a word, and $value$ is an integer. Look at \texttt{dev} set's answer key, and set simply count the number of times you encounter any answer. Record this in the hash table.
+
+\item Initialize a model. Run the model over some subset of the output (we did this using 2/3rds of the output). If the learner gets something wrong, weight that feature negatively. If it gets it right, weight that feature positively.
+
+\item Do this repeatedly until you have some number of trainers, each trained on overlapping parts of the \texttt{dev} set.
+
+\item Average their feature vectors; this gives you a weighted histogram.
+\end{enumerate}
+
+In the end, we simply hard-coded this weighted histogram into our submission. When it came time to predict the weapon, we adopted the following pipeline:
+
+\begin{enumerate}
+\item \textbf{Sentence-tokenize the document.}
+
+\item \textbf{Look in the sentence for any of the words that were in the \texttt{dev} set answers.}
+
+\item \textbf{Look in the histogram for the weight of each term found.}
+
+\item \textbf{Output the term with the highest weight.}
+\end{enumerate}
+
+
+\section{Predicting the \texttt{Perp\_Org} Slot}
+
+\texttt{Perp\_Org} is slightly more complicated than the \texttt{Weapon} slot, but the basic concept is similar. The difference is that, in the previous case, we used simple dictionary lookups for the weapons themselves. In this case, we supplemented this weighted histogram not just with the counts of the organization, but with the counts of the verbs around it. More concretely:
+
+\begin{enumerate}
+\item Look at the \texttt{dev} set answer key; build a hash table containing perp org answers paired with the count of the number of times they appeard (this is very similar to how we built the dictionary for the \texttt{Weapon} slot).
+
+\item Now look at all the texts in the \texttt{dev} set. Sentence-tokenize each document, and then use NLTK's POS tagger to get POS annotations for every sentence. Pull all the verbs out and count how many times each occurrs in the same sentence as each particular word that was in the \texttt{dev} set answers. For example, if we have a word, \textit{bomb}, and the verbs that occur around it are \textit{explodes} and \textit{kills}, then we count them. At the end, we have a count of the words that occur next to bomb.
+\end{enumerate}
+
+We amplify the verb histogram using the algorithm described in the previous section. Then, using this histogram, we can construct the following algorithm:
+
+\begin{enumerate}
+\item \textbf{Sentence-tokenize the document.}
+
+\item \textbf{Look in the sentence for any perp org that was also in the \texttt{dev} set.}
+
+\item \textbf{If there exists at least one term, use NLTK's POS tagger to annotate that sentence; then pull all the verbs out. Look at the amplified counts of each verb, and sum them up.}
+
+\item \textbf{Output the term that has the highest verb-weight sum.}
+\end{enumerate}
+
+
+
+
 
 
 
@@ -133,7 +188,7 @@ Our final project uses NLTK and the Stanford Parser. However, we also at various
 
 For a given slot, we ended up deploying the system that was most effective on the \texttt{test1} set. Although we performed many experiments, the \texttt{Victim}, \texttt{Perp\_Indiv}, and \texttt{Target} slots all ended up having an AutoSlog-TS backend, which was implemented almost entirely by \textbf{Vishay}. He was responsible for the pre- and post-processing of the AutoSlog system, as well as almost all of the internals. Finally, he implemented the initial \texttt{Incident} predictor, which was responsible largely for our score in the dry run.
 
-The remaining slots were \texttt{Perp\_Org} and \texttt{Weapon}, both implemented by \textbf{Alex}. Additionally, Alex was responsible for integrating all the systems together, testing all the systems, and tuning the output. Further, Alex spent much of his time trying to produce viable alternatives to AutoSlog-TS, and although you won't see them in the final system, you can still see the code in the repository (especially if you sift through the commits in the .git file). Outlines of the approaches in the presentation slides, and, to a lesser extent, in the ``originality" section.
+The remaining slots were \texttt{Perp\_Org} and \texttt{Weapon}, both implemented by \textbf{Alex}. Additionally, Alex was responsible for integrating all the systems together, testing the holistic system, and tuning results of the holistic system. Further, Alex spent much of his time trying to produce viable alternatives to AutoSlog-TS, and although you won't see them in the final system, you can still see the code in the repository (especially if you sift through the commits in the .git file). This mainly served to inform the direction of the project: if it was the case that one of the systems outperformed AutoSlog-TS in one of the slots, it may have been the case that AutoSlog-TS would have been abandoned; it is by virtue of the fact that this didn't happen that we submitted the system we did. Additionally, outlines of the approaches in the presentation slides, and, to a lesser extent, in the ``originality" section.
 
 \section{Emphasis / Originality}
 
@@ -145,7 +200,7 @@ We started our project thinking that extracting the relevant patterns will be th
 
 \begin{enumerate}
 
-\item Among 4 different parsers, we could barely get coherent output. To chunk NPs it was much more effective to word-tokenize, and then use NLTK's builtin NP chunker to find NPs.
+\item Among 4 different parsers, we could barely get coherent output. To chunk NPs it was much more effective to word-tokenize, apply simple POS-tags using the default NLTK tagger, and then use NLTK's builtin NP chunker to find NPs.
 
 \item We had not anticipated that the post processing module to be as complicated as it was. It was really difficult to sift through all the NPs extracted and get the correct answers.
 
