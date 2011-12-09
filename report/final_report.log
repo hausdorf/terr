@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 16:33
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 16:37
 entering extended mode
  %&-line parsing enabled.
 **final_report.tex
@@ -586,61 +586,61 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5]
 [6 <./result_t1.png> <./result_t2.png>]
-Overfull \hbox (16.4244pt too wide) in paragraph at lines 263--263
+Overfull \hbox (16.4244pt too wide) in paragraph at lines 261--261
 []\OT1/pcr/m/n/10.95 victim  NP VBD VBN            (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\w+?)\/VBN[] 
  []
 
 
-Overfull \hbox (49.27435pt too wide) in paragraph at lines 264--264
+Overfull \hbox (49.27435pt too wide) in paragraph at lines 262--262
 []\OT1/pcr/m/n/10.95 victim  NP VBD NN             (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\[.*?\])\/NP\s+[] 
  []
 
 
-Overfull \hbox (154.39423pt too wide) in paragraph at lines 266--266
+Overfull \hbox (154.39423pt too wide) in paragraph at lines 264--264
 []\OT1/pcr/m/n/10.95 victim  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (49.27435pt too wide) in paragraph at lines 268--268
+Overfull \hbox (49.27435pt too wide) in paragraph at lines 266--266
 []\OT1/pcr/m/n/10.95 victim  NN VBD NP             (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (42.70436pt too wide) in paragraph at lines 269--269
+Overfull \hbox (42.70436pt too wide) in paragraph at lines 267--267
 []\OT1/pcr/m/n/10.95 victim  NN IN NP              (\[[^/]+?\])\/NP\s+(\w+?)\/I
 N\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (95.2643pt too wide) in paragraph at lines 271--271
+Overfull \hbox (95.2643pt too wide) in paragraph at lines 269--269
 []\OT1/pcr/m/n/10.95 Perp_I  NP VBD TO VB          (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\w+?)\/TO\s+(\w+?)\/VB[] 
  []
 
 
-Overfull \hbox (68.98433pt too wide) in paragraph at lines 272--272
+Overfull \hbox (68.98433pt too wide) in paragraph at lines 270--270
 []\OT1/pcr/m/n/10.95 Weapon  VB IN NP              \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/IN\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (154.39423pt too wide) in paragraph at lines 273--273
+Overfull \hbox (154.39423pt too wide) in paragraph at lines 271--271
 []\OT1/pcr/m/n/10.95 Target  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (42.70436pt too wide) in paragraph at lines 275--275
+Overfull \hbox (42.70436pt too wide) in paragraph at lines 273--273
 []\OT1/pcr/m/n/10.95 Target  NN IN NP              (\[[^/]+?\])\/NP\s+(\w+?)\/I
 N\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (160.96422pt too wide) in paragraph at lines 276--276
+Overfull \hbox (160.96422pt too wide) in paragraph at lines 274--274
 []\OT1/pcr/m/n/10.95 Target  VBD VB(all) prep NP   \s+(\w+?)\/VBD\s+(\w+?)\/VB\
 w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP[] 
  []
@@ -653,7 +653,7 @@ Here is how much of TeX's memory you used:
  9426 multiletter control sequences out of 15000+200000
  36579 words of font info for 96 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,7n,38p,970b,425s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,7n,38p,983b,425s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2009/texmf-dist/font
 s/enc/dvips/base/8r.enc}</usr/local/texlive/2009/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmr10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/am
@@ -664,7 +664,7 @@ r/ucrb8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/courier/ucrr8a
 .pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr
 /local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
 live/2009/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_report.pdf (10 pages, 492319 bytes).
+Output written on final_report.pdf (10 pages, 492451 bytes).
 PDF statistics:
  205 PDF objects out of 1000 (max. 8388607)
  62 named destinations out of 1000 (max. 500000)
