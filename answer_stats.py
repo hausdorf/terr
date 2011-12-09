@@ -28,6 +28,7 @@ def liter(p):
 		for l in f.readlines():
 			yield l
 
+### USED FOR TESTING, NOT TRAINING
 def liter_(i):
 	if i == 1 or i == 3:
 		for f in fiter(ANSWR1):
@@ -38,13 +39,10 @@ def liter_(i):
 		for f in fiter(ANSWR2):
 			for l in f.readlines():
 				yield l
+### USED FOR TESTING, NOT TRAINING;
 
 def liter_all_f():
 	for f in fiter(ANSWR1):
-		for l in f.readlines():
-			yield l
-
-	for f in fiter(ANSWR2):
 		for l in f.readlines():
 			yield l
 
@@ -139,7 +137,6 @@ def results(thing, patts, stats, text):
 				"""
 
 				if scr > 0:
-					print scr, e
 					rslts.append((res.group(0).strip(), stats[thing][e]))
 					rslt[res.group(0).strip()] += scr
 
