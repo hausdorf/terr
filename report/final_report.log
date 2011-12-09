@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 16:39
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2009.11.7)  9 DEC 2011 16:56
 entering extended mode
  %&-line parsing enabled.
 **final_report.tex
@@ -527,7 +527,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 69--70
 
  []
 
-<workflow.png, id=77, 525.965pt x 140.525pt>
+<workflow.png, id=81, 525.965pt x 140.525pt>
 File: workflow.png Graphic file (type png)
  <use workflow.png>
 LaTeX Font Info:    Try loading font information for OMS+pcr on input line 89.
@@ -541,7 +541,7 @@ Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
 
-<patt.png, id=79, 489.83pt x 166.6225pt>
+<patt.png, id=83, 489.83pt x 166.6225pt>
 File: patt.png Graphic file (type png)
  <use patt.png> [2 <./workflow.png>]
 Missing character: There is no ‚ in font ptmr7t!
@@ -570,103 +570,203 @@ Missing character: There is no ú in font cmssbx10!
 Missing character: There is no ‚ in font cmssbx10!
 Missing character: There is no Ä in font cmssbx10!
 Missing character: There is no ù in font cmssbx10!
- <result_t1.png, id=122, 516.9714pt x 137.313pt>
+ <result_t1.png, id=126, 516.9714pt x 137.313pt>
 File: result_t1.png Graphic file (type png)
 
-<use result_t1.png> <result_t2.png, id=123, 516.0078pt x 141.1674pt>
+<use result_t1.png> <result_t2.png, id=127, 516.0078pt x 141.1674pt>
 File: result_t2.png Graphic file (type png)
 
 <use result_t2.png>
-Underfull \hbox (badness 10000) in paragraph at lines 201--203
+Underfull \hbox (badness 10000) in paragraph at lines 205--207
 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [5]
-[6 <./result_t1.png> <./result_t2.png>]
-Overfull \hbox (16.4244pt too wide) in paragraph at lines 261--261
+[5] [6 <./result_t1.png> <./result_t2.png>]
+Overfull \hbox (16.4244pt too wide) in paragraph at lines 265--265
 []\OT1/pcr/m/n/10.95 victim  NP VBD VBN            (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\w+?)\/VBN[] 
  []
 
 
-Overfull \hbox (49.27435pt too wide) in paragraph at lines 262--262
+Overfull \hbox (49.27435pt too wide) in paragraph at lines 266--266
 []\OT1/pcr/m/n/10.95 victim  NP VBD NN             (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\[.*?\])\/NP\s+[] 
  []
 
 
-Overfull \hbox (154.39423pt too wide) in paragraph at lines 264--264
+Overfull \hbox (154.39423pt too wide) in paragraph at lines 268--268
 []\OT1/pcr/m/n/10.95 victim  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (49.27435pt too wide) in paragraph at lines 266--266
+Overfull \hbox (49.27435pt too wide) in paragraph at lines 270--270
 []\OT1/pcr/m/n/10.95 victim  NN VBD NP             (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (42.70436pt too wide) in paragraph at lines 267--267
+Overfull \hbox (42.70436pt too wide) in paragraph at lines 271--271
 []\OT1/pcr/m/n/10.95 victim  NN IN NP              (\[[^/]+?\])\/NP\s+(\w+?)\/I
 N\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (95.2643pt too wide) in paragraph at lines 269--269
+Overfull \hbox (95.2643pt too wide) in paragraph at lines 273--273
 []\OT1/pcr/m/n/10.95 Perp_I  NP VBD TO VB          (\[[^/]*?\])\/NP\s+(\w+?)\/V
 BD\s+(\w+?)\/TO\s+(\w+?)\/VB[] 
  []
 
 
-Overfull \hbox (68.98433pt too wide) in paragraph at lines 270--270
+Overfull \hbox (68.98433pt too wide) in paragraph at lines 274--274
 []\OT1/pcr/m/n/10.95 Weapon  VB IN NP              \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/IN\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (154.39423pt too wide) in paragraph at lines 271--271
+Overfull \hbox (154.39423pt too wide) in paragraph at lines 275--275
 []\OT1/pcr/m/n/10.95 Target  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?
 )\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (42.70436pt too wide) in paragraph at lines 273--273
+Overfull \hbox (42.70436pt too wide) in paragraph at lines 277--277
 []\OT1/pcr/m/n/10.95 Target  NN IN NP              (\[[^/]+?\])\/NP\s+(\w+?)\/I
 N\s+(\[[^/]*?\])\/NP[] 
  []
 
 
-Overfull \hbox (160.96422pt too wide) in paragraph at lines 274--274
+Overfull \hbox (160.96422pt too wide) in paragraph at lines 278--278
 []\OT1/pcr/m/n/10.95 Target  VBD VB(all) prep NP   \s+(\w+?)\/VBD\s+(\w+?)\/VB\
 w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP[] 
  []
 
-[7] [8] [9] [10] (./final_report.aux) ) 
+[7] [8] [9] <amp_dev.png, id=159, 747.7536pt x 402.7848pt>
+File: amp_dev.png Graphic file (type png)
+ <use amp_dev.png>
+Overfull \hbox (123.79932pt too wide) in paragraph at lines 419--421
+[]\OT1/pcr/m/n/10.95 dev [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 419--421
+
+ []
+
+<amp_t1.png, id=160, 388.3308pt x 131.0496pt>
+File: amp_t1.png Graphic file (type png)
+ <use amp_t1.png>
+Underfull \hbox (badness 10000) in paragraph at lines 422--424
+
+ []
+
+
+Underfull \vbox (badness 6284) has occurred while \output is active []
+
+ [10 <./amp_dev.png>] <amp_t2.png, id=166, 386.4036pt x 134.4222pt>
+File: amp_t2.png Graphic file (type png)
+ <use amp_t2.png>
+Underfull \hbox (badness 10000) in paragraph at lines 425--427
+
+ []
+
+<hist_dev.png, id=167, 385.44pt x 126.2316pt>
+File: hist_dev.png Graphic file (type png)
+ <use hist_dev.png>
+Underfull \hbox (badness 10000) in paragraph at lines 430--432
+
+ []
+
+
+LaTeX Warning: File `hist_t1.png' not found on input line 434.
+
+
+! Package pdftex.def Error: File `hist_t1.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.434 \includegraphics[scale=0.75]{hist_t1.png}
+                                                \\
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 433--435
+
+ []
+
+
+LaTeX Warning: File `hist_t2.png' not found on input line 437.
+
+
+! Package pdftex.def Error: File `hist_t2.png' not found.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.437 \includegraphics[scale=0.75]{hist_t2.png}
+                                                \\
+Using draft setting for this image.
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 436--438
+
+ []
+
+<amphist_dev.png, id=168, 390.258pt x 128.1588pt>
+File: amphist_dev.png Graphic file (type png)
+ <use amphist_dev.png>
+Underfull \hbox (badness 10000) in paragraph at lines 442--444
+
+ []
+
+<amphist_t1.png, id=169, 360.3864pt x 100.2144pt>
+File: amphist_t1.png Graphic file (type png)
+ <use amphist_t1.png>
+Underfull \hbox (badness 10000) in paragraph at lines 445--447
+
+ []
+
+
+Underfull \vbox (badness 2326) has occurred while \output is active []
+
+ [11 <./amp_t1.png> <./amp_t2.png> <./hist_dev.png> <./amphist_dev.png>]
+<amphist_t2.png, id=178, 389.7762pt x 127.1952pt>
+File: amphist_t2.png Graphic file (type png)
+ <use amphist_t2.png>
+Underfull \hbox (badness 10000) in paragraph at lines 448--450
+
+ []
+
+[12 <./amphist_t1.png> <./amphist_t2.png>] (./final_report.aux) ) 
 Here is how much of TeX's memory you used:
- 6366 strings out of 493848
- 89985 string characters out of 3149207
+ 6407 strings out of 493848
+ 90596 string characters out of 3149207
  166120 words of memory out of 3000000
- 9426 multiletter control sequences out of 15000+200000
+ 9455 multiletter control sequences out of 15000+200000
  36579 words of font info for 96 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  38i,7n,38p,1039b,425s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2009/texmf-dist/font
-s/enc/dvips/base/8r.enc}</usr/local/texlive/2009/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmss17.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmssbx10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmsy10.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/courie
-r/ucrb8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/courier/ucrr8a
-.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr
-/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
-live/2009/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on final_report.pdf (10 pages, 492491 bytes).
+{/usr/local/te
+xlive/2009/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2009/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2009/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/texlive/2009/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2009/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2009/texmf-d
+ist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2009/texmf-dist/font
+s/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/
+urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/
+utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on final_report.pdf (12 pages, 791584 bytes).
 PDF statistics:
- 205 PDF objects out of 1000 (max. 8388607)
- 62 named destinations out of 1000 (max. 500000)
- 141 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 231 PDF objects out of 1000 (max. 8388607)
+ 65 named destinations out of 1000 (max. 500000)
+ 184 words of extra memory for PDF output out of 10000 (max. 10000000)
 

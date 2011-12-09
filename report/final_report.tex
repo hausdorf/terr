@@ -192,7 +192,11 @@ The remaining slots were \texttt{Perp\_Org} and \texttt{Weapon}, both implemente
 
 \section{Emphasis / Originality}
 
-We started our project thinking that extracting the relevant patterns will be the most important part of the project, and because we did not want any bias in selecting of Patterns, we decided to go with the AutoSlug- TS approach. However we later found that the Post Processing phase was as important as the Pattern Selection phase. We were extracting a lot of irrelevant NPs and the few relevant NPs that we were extracting were filled with redundant words. Our most original module was the Post processor ( and Weapns ???? ) because we tried a lot of unique things in that module. However it was also the least robust part of our project.
+Our final approach amounted mainly to a direct use of AutoSlog-TS, but what doesn't show up here is the stack of more creative schemes we implemented, but discarded. Some of these schemes were used on a limited bases---we talked about some of these (particularly secitons 1.3 and 1.4, when we talked about our approach to the \texttt{Weapon} and \texttt{Perp\_Org} slots. We would say that the boosted weighted historgram and parse-free organization identification schemes were probably the part of our final \textit{submitted} project that were most original.
+
+Another thing that make our project relatively unique is the odd choice of technology we explored. We tried the Stanford parser, the Berkeley Parser, the Collins parser, and used more than a few components from the NLTK. While other groups were struggling for just good parses, we actually explored other options. Toward the end of the project we discovered that it was more effective to simply POS tag the sentences and chunk the NPs with the default NLTK chunker, which is a good example of how this is true. Another example is our weighted verb histogram scheme, which we used for \texttt{Perp\_Org} identification.
+
+Lastly, we are unique in that we achieved reasonably good results on a number of methods; most groups picked one method alone and developed it until the deadline. Please see APPENDIX C for these results!
 
 \section{Performance results and “glass box” analysis}
 
@@ -408,6 +412,41 @@ ACTIVE MEMBER OF
 SPOKESMAN OF 	
 \end{verbatim}
 
+\section{APPENDIX C}
+
+When we ran the approach we used on \texttt{Weapon} over all the slots except \texttt{Incident}, we got the following results:
+
+\texttt{dev}
+\includegraphics[scale=0.75]{amp_dev.png} \\
+
+\texttt{test1}
+\includegraphics[scale=0.75]{amp_t1.png} \\
+
+\texttt{test2}
+\includegraphics[scale=0.75]{amp_t2.png} \\
+
+When we ran a slightly modified version of approach we used on \texttt{Perp\_Org} over all the slots except \texttt{Incident}, we got the following results (note the actual perp org slot is slightly different):
+
+\texttt{dev}
+\includegraphics[scale=0.75]{hist_dev.png} \\
+
+\texttt{test1}
+\includegraphics[scale=0.75]{hist_t1.png} \\
+
+\texttt{test2}
+\includegraphics[scale=0.75]{hist_t2.png} \\
+
+
+Finally, combining both of them, we get the following:
+
+\texttt{dev}
+\includegraphics[scale=0.75]{amphist_dev.png} \\
+
+\texttt{test1}
+\includegraphics[scale=0.75]{amphist_t1.png} \\
+
+\texttt{test2}
+\includegraphics[scale=0.75]{amphist_t2.png} \\
 
 
 \end{document}
