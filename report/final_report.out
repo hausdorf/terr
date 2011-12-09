@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Architecture of your IE system}{}
+\BOOKMARK [2][-]{subsection.1.1}{Predicting the Incident Slot}{section.1}
+\BOOKMARK [2][-]{subsection.1.2}{Predicting Slots Using AutoSlog-TS \(Perp\137Ind, Targets, and Victim\)}{section.1}
+\BOOKMARK [3][-]{subsubsection.1.2.1}{AutoSlog-TS Pipeline}{subsection.1.2}
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Pattern Extraction in AutoSlog-TS}{subsection.1.2}
+\BOOKMARK [3][-]{subsubsection.1.2.3}{Pattern Matching in AutoSlog-TS}{subsection.1.2}
+\BOOKMARK [3][-]{subsubsection.1.2.4}{Post Proessing in AutoSlog-TS}{subsection.1.2}
+\BOOKMARK [2][-]{subsection.1.3}{Predicting the Weapon slot}{section.1}
+\BOOKMARK [1][-]{section.2}{External resources}{}
+\BOOKMARK [1][-]{section.3}{Contribution of each team member}{}
+\BOOKMARK [1][-]{section.4}{Emphasis / Originality}{}
+\BOOKMARK [1][-]{section.5}{Performance results and “glass box” analysis}{}
+\BOOKMARK [1][-]{section.6}{Surprise Factor}{}
+\BOOKMARK [1][-]{section.7}{Successes, regrets, and lessons learned}{}
