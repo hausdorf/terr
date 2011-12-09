@@ -196,6 +196,22 @@ We started our project thinking that extracting the relevant patterns will be th
 
 \section{Performance results and “glass box” analysis}
 
+Our results follow:
+
+\includegraphics[scale=0.75]{result_t1.png} \\
+\includegraphics[scale=0.75]{result_t2.png} \\
+
+As you can see, we do significantly better on the \texttt{test1} set than the \texttt{test2} set. There are a number of reasons for this, but the main one is that AutoSlog-TS's postprocessing step was created exclusively for, and exclusively using, \texttt{test1}'s data. This turns out to have caused the output to be very much overfitted, causing it to generalize poorly.
+
+Notice, for example, that the \texttt{Weapon} and \texttt{Incident} slots seem to have generalized quite nicely. Even the \texttt{Perp\_Org} does well compared to the rest of the slots.
+
+What's really dragging down the average is the recall on \texttt{Perp\_Indiv}; when you just take out that one slot, it bumps our score by more than 4\%, from 0.28 to 0.32. This indicates that perhaps we're not doing as bad as it seems, \textit{prima facie}, because this is not even the worst slot---in fact, in each of the AutoSlog-TS results (\texttt{Perp\_Ind}, \texttt{Targets}, and \texttt{Victims}), we make \textit{at least} twice as many predictions as there are actual answers. One simple modification we could do to improve our score would be to simply throttle the number of predictions we make in each slot, particularly the \texttt{Victim} slot. If we had gotten a modest recall rate of 30\% (rather than the absurd 18\% we did get), we would have boosted our total score to 0.37.
+
+It's not hard to show convincingly that there are a number of fairly simple things that we could have done to increase our results \textit{without} affecting the actual learning algorithm. This is comforting to know, since it indicates that the things we learned during this project are not necessarily completely discounted by the abysmal performance on \texttt{test2}. While we did make at least one huge mistake, it is not true that our approach was completely hopeless.
+
+
+
+
 \section{Surprise Factor}
 
 \begin{enumerate}
@@ -226,6 +242,173 @@ That said, our results on the \texttt{test2} set were very bad, mainly because o
 This is a big lesson not really because we didn't know about overfitting before (we did), but because it makes the lesson of overfitting \textit{very} concrete: avoid anything that even \textit{looks} like overfitting.
 
 
+
+
+
+
+
+
+
+
+
+
+
+\section*{APPENDIX A}
+
+This appendix lists all the heuristics we used along with regex patterns.  
+All of these Heuristics were taken from the AutoSlog-TS publication.
+
+\begin{verbatim}
+Slot 	  Heuristic 	         Regex 
+victim 	NP VBD VBN           	(\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/VBN
+victim  NP VBD NN             (\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\[.*?\])\/NP\s+
+victim  VBD NP                \s+(\w+?)\/VBD\s+(\[[^/]*?\])\/NP
+victim  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP
+victim  VBG NP                \s+(\w+?)\/VBG\s+(\[[^/]*?\])\/NP
+victim  NN VBD NP	            (\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\[[^/]*?\])\/NP
+victim  NN IN NP	             (\[[^/]+?\])\/NP\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP
+Perp_I  NP VB(all)	           (\[[^/]*?\])\/NP\s+(\w+?)\/VB\w{0,1}
+Perp_I  NP VBD TO VB          (\[[^/]*?\])\/NP\s+(\w+?)\/VBD\s+(\w+?)\/TO\s+(\w+?)\/VB
+Weapon  VB IN NP              \s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP
+Target  VB(all) TO VB NP      \s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/TO\s+(\w+?)\/VB\s+(\[[^/]*?\])\/NP
+Target  VBD NP	               \s+(\w+?)\/VB\w{0,1}\s+(\[[^/]*?\])\/NP
+Target  NN IN NP              (\[[^/]+?\])\/NP\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP
+Target  VBD VB(all) prep NP   \s+(\w+?)\/VBD\s+(\w+?)\/VB\w{0,1}\s+(\w+?)\/IN\s+(\[[^/]*?\])\/NP
+\end{verbatim}
+
+ 
+
+
+
+\section*{APPENDIX B}
+
+This Appendix Contains all the patterns we used for Extraction System. Most of these patterns were learnt using the AutoSlog-TS, and some of them were added( or modified ) manually.
+
+
+\begin{verbatim}
+VICTIM
+
+<NP> DIED INSTANTANEOUSLY
+<NP> WAS\s*[\w]*\s*ASSASSINATED
+<NP> WAS\s*[\w]*\s*INJURED
+<NP> WAS\s*[\w]*\s*KIDNAPPED
+<NP> WAS\s*[\w]*\s*KILLED
+<NP> WAS\s*[\w]*\s*MURDERED
+<NP> WAS\s*[\w]*\s*WOUNDED
+<NP> WERE\s*[\w]*\s*KILLED
+<NP> WERE\s*[\w]*\s*KIDNAPPED 
+<NP> WERE\s*[\w]*\s*ABDUCTED 
+<NP> WERE\s*[\w]*\s*ASSASINATED
+<NP> WERE\s*[\w]*\s*INJURED 
+<NP> WERE\s*[\w]*\s*MURDERED
+<NP> WERE\s*[\w]*\s*WOUNDED
+<NP> WERE\s*[\w]*\s*SHOT
+<NP> WAS\s*[\w]*\s*SHOT
+ASSASSINATION OF  <NP>
+ASSASSINATIONS OF  <NP>
+ASSASSINS OF  <NP>
+ATTACK ON  <NP>
+ATTACKED  <NP>
+BLOOD OF  <NP>
+BODIES OF  <NP>
+BURIAL OF  <NP>
+DEATH OF   <NP>
+DEATHS OF <NP>
+DISAPPEARANCE OF <NP>
+ELIMINATED <NP>
+FUNERAL OF <NP>
+FUNERALS OF <NP>
+KIDNAPPED <NP>
+KIDNAPPING OF <NP>
+KIDNAPPINGS OF <NP>
+KILLED <NP>
+KILLING <NP>
+KILLING OF <NP>
+LIVES OF <NP>
+LOSS OF <NP>
+MACHINEGUNNED <NP>
+MASSACRE OF <NP>
+MURDER OF <NP>
+MURDERED <NP>
+MURDERERS OF <NP>
+MURDERS OF <NP>
+WOUNDED  <NP>
+\end{verbatim}
+
+\begin{verbatim}
+PERP_INDIV
+
+<NP>  ASSASSINATED
+<NP> ATTACKED
+<NP>BLEW
+<NP> BOMBED
+<NP>  BURNED
+<NP> COMMITTED
+<NP> DETONATED
+<NP> FIGHTERS
+<NP>  FIRED
+<NP>  HURLED
+<NP>  INFLICTED
+<NP>  KIDNAPPED
+<NP>  KILLED
+<NP>  MACHINEGUNNED
+<NP>  SABOTAGED
+WAS KIDNAPPED BY <NP>
+WERE KIDNAPPED BY <NP>
+WERE ABDUCTED BY <NP>
+WAS ABDUCTED BY <NP>
+WAS ATTACKED BY <NP>
+WAS KILLED BY <NP>
+WERE KILLED BY <NP>
+WAS MURDERED BY <NP>
+WERE MURDERED BY <NP>
+WAS SHOT BY <NP>
+WERE SHOT BY <NP>
+WAS ASSASSINATED BY <NP>
+WERE ASSASSINATED BY <NP>
+WAS INJURED BY <NP>
+WERE INJURED BY <NP>
+WERE WOUNDED BY <NP>
+WAS WOUNDED BY <NP>
+WERE DETONATED BY <NP>
+\end{verbatim}
+
+\begin{verbatim}
+TARGET
+
+AN ATTACK ON <NP>
+ATTACK ON <NP>
+ATTACKED <NP>
+ATTACKS ON <NP>
+BOMBED <NP>
+BOMB ATTACK ON <NP>
+BOMB IN <NP>
+BOMBING <NP>
+BURNED <NP>
+BURNING <NP>
+DAMAGED <NP>
+DESTROYED <NP>
+DESTRUCTION OF <NP>
+DOWNED <NP>
+DOWNING OF <NP>
+DYNAMITE ATTACK ON <NP>
+FIRED <NP>
+HIT <NP>
+MACHINEGUNNED <NP>
+SABOTAGED <NP>
+SET FIRE TO <NP>
+\end{verbatim}
+
+
+
+Perp\_Org   ( We got these patterns while reviewing the other slots. we did not get time to implement these)
+
+\begin{verbatim}
+GUERRILLAS OF
+MEMBERS OF
+ACTIVE MEMBER OF
+SPOKESMAN OF 	
+\end{verbatim}
 
 
 
